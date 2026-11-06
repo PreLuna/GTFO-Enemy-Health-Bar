@@ -1,0 +1,3 @@
+[Info   :   BepInEx] Loading [PreLuna Enemy Health Bar 0.2.0]
+[Info   :PreLuna Enemy Health Bar] P2 local-hit patches applied.
+[Info   :PreLuna Enemy Health Bar] HUD loaded; ASCII labels; toggle=PageDown, maxDistance=60

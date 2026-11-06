@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "EnemyTypeMappingTests",
+    "Sources": [
+      "EnemyHealthBar/src/Core/EnemyTypeMapping.cs",
+      "EnemyHealthBar/tests/EnemyTypeMappingTests.cs"
+    ],
+    "Arguments": [
+      "out/tests/EnemyTypeMappingTests.json"
+    ]
+  },
+  {
+    "Name": "EnemyBarMathTests",
+    "Sources": [
+      "EnemyHealthBar/src/Core/EnemyBarMath.cs",
+      "EnemyHealthBar/src/Core/EnemyHudProfile.cs",
+      "EnemyHealthBar/tests/EnemyBarMathTests.cs"
+    ],
+    "Arguments": [
+      "out/tests/EnemyBarMathTests.json"
+    ]
+  }
+]

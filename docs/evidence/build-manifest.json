@@ -1,0 +1,16 @@
+{
+  "Repository": "GTFO-Enemy-Health-Bar",
+  "SourceLockSHA256": "B0A7BA072C5BD1ECDB459480A36F55BEB7A8A11DC97737C8886AED4D801D8289",
+  "ToolchainSourceLockSHA256": "E67A08DEBFABB7F383A0A6963F99322353A97A6A0E701EF9F526F6108638EA71",
+  "BuiltAtUtc": "2026-11-06T08:34:51.4086127Z",
+  "Artifacts": [
+    {
+      "Id": "EnemyHealthBar",
+      "Assembly": "PreLuna.EnemyHealthBar",
+      "Path": "out/package/BepInEx/plugins/PreLuna.EnemyHealthBar/PreLuna.EnemyHealthBar.dll",
+      "SHA256": "BB8A6A2966261303A8C7A5752AF7A221B2506FDD9A81E68FAFA5710689903851"
+    }
+  ],
+  "GameFilesWritten": false,
+  "GameplayTested": false
+}

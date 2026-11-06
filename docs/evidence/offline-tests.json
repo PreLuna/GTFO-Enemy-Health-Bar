@@ -1,0 +1,8 @@
+{
+  "Passed": true,
+  "Suites": [
+    "EnemyTypeMappingTests",
+    "EnemyBarMathTests"
+  ],
+  "GameplayTested": false
+}

@@ -1,0 +1,26 @@
+{
+  "SchemaVersion": 3,
+  "Repository": "GTFO-Enemy-Health-Bar",
+  "Modules": [
+    {
+      "Id": "EnemyHealthBar",
+      "Assembly": "PreLuna.EnemyHealthBar",
+      "Guid": "PreLuna.EnemyHealthBar",
+      "Version": "0.2.0",
+      "DependencyGuids": [],
+      "CompileDependencies": [],
+      "Kind": "managed",
+      "ModuleRoot": "EnemyHealthBar",
+      "SourceRoot": "EnemyHealthBar/src",
+      "Name": "独立敌人血条",
+      "DependencyDetails": [],
+      "TestsRoot": "EnemyHealthBar/tests"
+    }
+  ],
+  "InputRoots": [
+    "EnemyHealthBar",
+    "IntegrationTests",
+    "docs"
+  ],
+  "TestPlanPath": "IntegrationTests/recipes.json"
+}
