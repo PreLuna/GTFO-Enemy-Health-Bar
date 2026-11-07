@@ -6,7 +6,7 @@
       "Id": "EnemyHealthBar",
       "Assembly": "PreLuna.EnemyHealthBar",
       "Guid": "PreLuna.EnemyHealthBar",
-      "Version": "0.2.0",
+      "Version": "0.3.0",
       "DependencyGuids": [],
       "CompileDependencies": [],
       "Kind": "managed",
@@ -15,10 +15,36 @@
       "Name": "独立敌人血条",
       "DependencyDetails": [],
       "TestsRoot": "EnemyHealthBar/tests"
+    },
+    {
+      "Id": "EnemyHealthBar.DamageNumbers",
+      "Assembly": "PreLuna.EnemyHealthBar.DamageNumbers",
+      "Guid": "PreLuna.EnemyHealthBar.DamageNumbers",
+      "Version": "0.1.0",
+      "DependencyGuids": [
+        "PreLuna.EnemyHealthBar"
+      ],
+      "CompileDependencies": [
+        "EnemyHealthBar"
+      ],
+      "Kind": "managed",
+      "ModuleRoot": "EnemyHealthBar.DamageNumbers",
+      "SourceRoot": "EnemyHealthBar.DamageNumbers/src",
+      "Name": "全境封锁风格敌人伤害数字",
+      "DependencyDetails": [
+        {
+          "Guid": "PreLuna.EnemyHealthBar",
+          "DependencyFlags": 1,
+          "Kind": "Hard",
+          "DeclaredVersion": "0.3.0"
+        }
+      ],
+      "TestsRoot": "EnemyHealthBar.DamageNumbers/tests"
     }
   ],
   "InputRoots": [
     "EnemyHealthBar",
+    "EnemyHealthBar.DamageNumbers",
     "IntegrationTests",
     "docs"
   ],

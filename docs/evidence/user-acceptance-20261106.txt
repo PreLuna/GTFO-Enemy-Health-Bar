@@ -1,0 +1,28 @@
+User acceptance — 2026-11-06
+
+Quote (verbatim): 测试通过十分满意
+Source: user message after installing EnemyHealthBar 0.3.0 +
+PreLuna.EnemyHealthBar.DamageNumbers 0.1.0 and testing in game.
+
+Scope
+- This is a user-reported overall pass, not a per-feature test matrix.
+- Installed and tested build:
+  - PreLuna.EnemyHealthBar 0.3.0, 45568 bytes,
+    SHA256 431132ECBBC7200228DB1C2BC596E7473CC5DD45C0F972D414B9A9589F2AC3FA
+  - PreLuna.EnemyHealthBar.DamageNumbers 0.1.0, 17408 bytes,
+    SHA256 C23DF9205B226F02AAB5062FE3D735F8766727415EA40AEEAA75BCE85FA6E745
+- Installation archive:
+  maintenance/游戏安装-20261106-敌人血条0.3.0与伤害数字/ (workspace path)
+- Game was installed but not launched by the assistant; the user launched and tested.
+
+Not claimed by this evidence
+- Client / non-host damage-number behavior.
+- Boss/MiniBoss-specific gameplay.
+- Chinese dynamic font or level slot.
+- Exhaustive per-feature coverage of weakspot/armor/kill/immune, shotgun rows,
+  4K, third-person, or edge cases; those remain useful regression items.
+
+Follow-up
+- The repository was cleaned up (docs/evidence final build snapshot, out removed,
+  0.2.0 log renamed) after this acceptance. Non-document inputs were not changed
+  by that cleanup; no build was rerun.

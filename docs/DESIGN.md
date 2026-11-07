@@ -56,3 +56,18 @@ The visual target is a Division-style focus bar adapted to GTFO, not a copy of t
 The screenshot below is the accepted focus-bar check (`Shooter_Hibernate`, Special). It is a local debug capture, not a marketing image.
 
 ![P1 focus bar](media/p1-focus.jpg)
+
+## 7. Damage numbers (sub-mod)
+
+The damage-number sub-mod uses the same screen-space IMGUI approach but a
+Division-2-inspired stack at the hit point:
+
+- right-aligned rows, newest at the bottom, older rows move up and fade;
+- white `#F2F0EA` body, amber `#E8A33D` weakspot (1.22×, bold),
+  cyan `#4FB8E8` armor (0.85×, 85% alpha);
+- 24px/30px at 1080p, 5–10 rows depending on shotgun pellet count;
+- 0.95s lifetime, last 35% fades; 1.5px dark shadow, no thick outline;
+- kill keeps the hit color and adds a 0.2s red underline.
+- system-font fallback; Borda is not shipped.
+
+The full style/config and open P3 checks are in [DAMAGE_NUMBERS.md](DAMAGE_NUMBERS.md).

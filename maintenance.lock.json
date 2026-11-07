@@ -19,38 +19,43 @@
     },
     {
       "Path": "CHANGELOG.md",
-      "SHA256": "2A1AE0F753C907CF080580FBA823CB3F4A5928786014693EB447F311379AF1EE",
-      "Bytes": 941
+      "SHA256": "7F3327B7FFCB349C1119018F066905D30D2B35A6EE00F3719D0874C2F0F12DA7",
+      "Bytes": 2320
+    },
+    {
+      "Path": "docs/DAMAGE_NUMBERS.md",
+      "SHA256": "7BCA3D1EF7E59041063FEB6017670B7A08D3AA770D2FBBC5061345ADE365B47C",
+      "Bytes": 5678
     },
     {
       "Path": "docs/DESIGN.md",
-      "SHA256": "5C468446C0D4059096EA43AE0B9F5F33227F82A99B8020FE22303453D6B7F5E8",
-      "Bytes": 3002
+      "SHA256": "751FCEF5CEB8F19EC257F87BD6A18E655D0A6651A0B2DE7F15CA0247EC508311",
+      "Bytes": 3669
     },
     {
       "Path": "docs/DEVELOPMENT.md",
-      "SHA256": "A1A9FC1EC03FAB676E0A0FE829581A75C9522A3E020770FCFDC64FFBAC97657A",
-      "Bytes": 10589
+      "SHA256": "5229D4B5E48D849B228AAC676871C7197867A922CB3D812E6844B9E536091B61",
+      "Bytes": 13868
     },
     {
       "Path": "docs/evidence/build-manifest.json",
-      "SHA256": "88D949BD9FB07849B4531471A7994278587B00BD868B432DF67F3E56B1F4CEE5",
-      "Bytes": 639
+      "SHA256": "064ADA84B3E560FCF296824DE0D4C5F94A5BE5DA78869078AECBDDA1EC37C700",
+      "Bytes": 1098
     },
     {
       "Path": "docs/evidence/build-output.txt",
-      "SHA256": "411F78B75BC7818B9A431BA3CFEB03BE3ACA10195203B6473E16F08D360D0968",
-      "Bytes": 75
+      "SHA256": "D862409496055BB8AC92654328AEB2CA481B3EAD5D50FE63A2A58DC5F1B01896",
+      "Bytes": 213
     },
     {
-      "Path": "docs/evidence/game-log-excerpt.txt",
+      "Path": "docs/evidence/game-log-excerpt-0.2.0.txt",
       "SHA256": "21B4327993657C695DCA5E92E92189143DAFEF7A757075142A3827A32573E286",
       "Bytes": 223
     },
     {
       "Path": "docs/evidence/offline-tests.json",
-      "SHA256": "732BA79F1E82CBD2B884ECAAFBAF46BA63E22DC75724AF6434B0799E7005C39D",
-      "Bytes": 128
+      "SHA256": "BF91F6AAD90119F5EDB19E588C3693DCC4AA4FA58B7BF886237B72B8C0A8E279",
+      "Bytes": 188
     },
     {
       "Path": "docs/evidence/p0-striker-hibernate.txt",
@@ -59,8 +64,13 @@
     },
     {
       "Path": "docs/evidence/README.md",
-      "SHA256": "6D7AC33BB47720202B90A5559DF980A88081A721B1FDF851BC55085126E492F5",
-      "Bytes": 1603
+      "SHA256": "C2BFF48C9EA85B55640DEA39CA730020F69E30A3F55D33278625CB8CB2D5F992",
+      "Bytes": 3720
+    },
+    {
+      "Path": "docs/evidence/user-acceptance-20261106.txt",
+      "SHA256": "06DAF47E074941B8080C5CEDB382F699625D3DF11287752B50B7DB6A631CF298",
+      "Bytes": 1277
     },
     {
       "Path": "docs/media/design-annotated.png",
@@ -84,8 +94,58 @@
     },
     {
       "Path": "docs/RESEARCH.md",
-      "SHA256": "B4F487BAF3989F1BECB8E495FFC9CE863B4DF72A6076B123BC2AE86A69CEB97B",
-      "Bytes": 4526
+      "SHA256": "E81AF961354D0C1C53BE4C827BF6F0180FA944475702FC458C28B8FD4C7DD6E1",
+      "Bytes": 6684
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberFormat.cs",
+      "SHA256": "5234D2229880DD3423B9074E25322F43627BDFEF6B388D668B2CF709BD0833B3",
+      "Bytes": 992
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberKind.cs",
+      "SHA256": "FE04CF6C3C49FD0751D912DD9F07F175335632D5DC927498C78758BEB23953EC",
+      "Bytes": 165
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberMath.cs",
+      "SHA256": "2220C4BD58A11666ED7DEA1E7C4C1A67D5541125769FAEA399812CF78E237D74",
+      "Bytes": 1226
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberStyle.cs",
+      "SHA256": "B7A4B0DB648B3F215F50D6138EBCC03EA9F1DBFE346FF2FD39DA81248745605B",
+      "Bytes": 1327
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/DamageNumberConfig.cs",
+      "SHA256": "2274B2236A48C961603B6BC0A47408FD1E976905E6AFD5FB644B8DC636338040",
+      "Bytes": 3642
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/DamageNumberFont.cs",
+      "SHA256": "0CEAAF86D073EB64BA0DE6E14C3FD5AF52277C74F26FFBCA6E1A8F919563DF45",
+      "Bytes": 2106
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/DamageNumberRenderer.cs",
+      "SHA256": "843FC6BACCEB683C5676452C7CCCF37919699B1451B09666DCDF4B6F8BED3BBC",
+      "Bytes": 2871
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/DamageNumberRuntime.cs",
+      "SHA256": "BD82FDE963137ADF9DAD0EFFCB7BBD8A19929B4A32B2310E5A918488795F7ED6",
+      "Bytes": 8546
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/Plugin.cs",
+      "SHA256": "C36D9F64902B0F92DE5AE711C82D72810AACD64437617CB2A426F649E4C7AC51",
+      "Bytes": 2243
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/tests/DamageNumberTests.cs",
+      "SHA256": "165D441E7AEE61D8931DCCA713504B672F485894D641ED8B28A843A74EAA87C0",
+      "Bytes": 5106
     },
     {
       "Path": "EnemyHealthBar/src/Core/EnemyBarMath.cs",
@@ -113,9 +173,14 @@
       "Bytes": 3509
     },
     {
+      "Path": "EnemyHealthBar/src/Runtime/EnemyHitApi.cs",
+      "SHA256": "EFE31D55A02EB5ECA0FB9F9BF62752CF7E075CE9E888E435EE3FE207580E9AC8",
+      "Bytes": 2799
+    },
+    {
       "Path": "EnemyHealthBar/src/Runtime/EnemyHitPatch.cs",
-      "SHA256": "11DA64E6A64C4F4283D1224CB6D7B399DF8123A6151F8B99924C05BDF2C9D7CC",
-      "Bytes": 2265
+      "SHA256": "C8BC3EC5C3899961A0E2A4E54AF13D688D0D048CE0779C3302C7163236A47CCE",
+      "Bytes": 7680
     },
     {
       "Path": "EnemyHealthBar/src/Runtime/EnemyHudConfig.cs",
@@ -129,8 +194,8 @@
     },
     {
       "Path": "EnemyHealthBar/src/Runtime/EnemyHudRuntime.cs",
-      "SHA256": "50A8EB7D4A0B206383741CE9E74803FBCE4BA5305376F7DEAC69FA05B916D256",
-      "Bytes": 5265
+      "SHA256": "3BEF2057050F6E14BBB1D9C261CE11E0A49BC2DD05EA6968DFC25BC3B6B7C534",
+      "Bytes": 5806
     },
     {
       "Path": "EnemyHealthBar/src/Runtime/EnemyHudState.cs",
@@ -149,8 +214,8 @@
     },
     {
       "Path": "EnemyHealthBar/src/Runtime/Plugin.cs",
-      "SHA256": "6319D7B967A5A60181FE7EDD2FAB73CA6FD4DB2261042497BBD1588C9A273C40",
-      "Bytes": 1977
+      "SHA256": "452E90B19C7EE6E075F4FDAB52955BA49909537802F6155D88713F4A6961CB33",
+      "Bytes": 2182
     },
     {
       "Path": "EnemyHealthBar/tests/EnemyBarMathTests.cs",
@@ -164,18 +229,18 @@
     },
     {
       "Path": "IntegrationTests/recipes.json",
-      "SHA256": "07C03CA87C3ADE399190BD03B04C3756780E07A096A2D3454BF4C3ACB4D3F7F8",
-      "Bytes": 533
+      "SHA256": "549794DF568DE6071F67732566CA3F85D7156A719F59AB87C50B45C4B08EBD33",
+      "Bytes": 1000
     },
     {
       "Path": "README.md",
-      "SHA256": "A87678C6D6A09A122351018119A65661E1E7C297D878E1AD2AB59091245A6495",
-      "Bytes": 5344
+      "SHA256": "25A2CCD5ED3BDA6BDD10769709A4F53718FF3EF6056DE2C465F26143E00107BF",
+      "Bytes": 8851
     },
     {
       "Path": "repo.json",
-      "SHA256": "396EF78898A93B3A9467960E728B8E508DA0DB32B87E7A3E7F46022A37800CA7",
-      "Bytes": 645
+      "SHA256": "C690648E8723A1132DEBB0ED01E7A01E7B1265162DEB6A6146B18C44AE7B9689",
+      "Bytes": 1450
     },
     {
       "Path": "Test.ps1",
@@ -184,8 +249,8 @@
     },
     {
       "Path": "THIRD-PARTY-NOTICES.md",
-      "SHA256": "DA9BA0576EC17C765420B10E88897AA1A2A588B586A0C54CE7CBB0EEEAB4CCD4",
-      "Bytes": 1494
+      "SHA256": "27E9C23F4423C973775D36BA50AF497D4609C83C43BE654B9F9848ED897C50DC",
+      "Bytes": 2995
     }
   ]
 }

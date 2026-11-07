@@ -67,3 +67,43 @@ Workspace paths (not part of this repository):
 - `研究资料/敌人血条-20261106/施工方案.md`
 - `研究资料/敌人血条-20261106/analysis/` (P0 log, screenshots, probe notes)
 - `研究资料/敌人血条-20261106/upstream/` (ForgeUI/HawChow/KillFeed/Bossbars/DamageSync snapshots)
+
+## 8. Damage numbers (0.1.0 sub-mod)
+
+### 8.1 Upstream code and license
+
+| Source | What it taught | Reuse decision |
+| --- | --- | --- |
+| GTFO-Modding/DamageNumbers 2.3.4 | `BulletDamage` Harmony prefix; `m_type` Weakspot/Armor; back-bonus formula; kill/immune flags; `FloatingTextAPI` TMP factory | MIT (Copyright (c) 2022 Dak). Hook/parameter/classification ideas reused; no TMP/AssetBundle dependency or code copied verbatim |
+| GTFO-Modding/FloatingTextAPI 1.0.5 | `IFloatingTextInfo`, TMP prefab, random 3D velocity/gravity | Not adopted; new sub-mod renders with IMGUI and does not ship the API |
+
+The MIT text is in [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md). The old
+mod's visual language (player-slot colors, `!` suffix, red kill outline, random
+3D float) is intentionally **not** copied; it is a Rain World-style layer, while
+the new sub-mod follows the Division 2 right-aligned stack layout.
+
+### 8.2 Division 2 visual study
+
+Workspace screenshots: `研究截图/伤害数字_参考/04_全境封锁2/`
+(Interface In Game 4K `kill-enemy`/`defend-the-control-point`; Bilibili
+`BV13c411q7JA` 1080P frame). Measured/observed:
+
+- hit-point anchored, right-aligned vertical stack; newest at bottom, 5 visible
+  rows in the sample, ~22px line height and 14–18px glyphs at 1080p;
+- white body, amber weakspot/crit, cyan armor; amber is larger/bolder, cyan is
+  smaller/dimmer; comma thousands separators;
+- no thick outline; 1–2px dark shadow; the UI font is Borda (commercial, not
+  redistributable).
+
+GTFO adaptation: actual health loss per damage call, white `#F2F0EA`,
+amber `#E8A33D`, cyan `#4FB8E8`, `IMMUNE` `#96FAE8`, kill red short underline,
+system-font fallback, 24px/30px at 1080p. The full style/config note is
+[docs/DAMAGE_NUMBERS.md](DAMAGE_NUMBERS.md).
+
+### 8.3 Open data questions
+
+`precisionMulti` may not include `m_weakspotDamageMulti`; the sub-mod therefore
+shows `HealthBefore - HealthAfter` (authoritative) and keeps `RawDamage` in the
+API for later calibration. `limbID` 0, client-side `BulletDamage` callbacks,
+`IsImortal` targets, and the back-bonus direction sign still need a P0 probe
+before any claim is made.

@@ -1,16 +1,23 @@
 {
   "Repository": "GTFO-Enemy-Health-Bar",
-  "SourceLockSHA256": "B0A7BA072C5BD1ECDB459480A36F55BEB7A8A11DC97737C8886AED4D801D8289",
+  "SourceLockSHA256": "C04BF28D1431ECC0FB32F491CB8FB5E45F89F5982579D98BD1E4FAD6A6002677",
   "ToolchainSourceLockSHA256": "E67A08DEBFABB7F383A0A6963F99322353A97A6A0E701EF9F526F6108638EA71",
-  "BuiltAtUtc": "2026-11-06T08:34:51.4086127Z",
+  "BuiltAtUtc": "2026-11-06T09:58:04.2815360Z",
   "Artifacts": [
     {
       "Id": "EnemyHealthBar",
       "Assembly": "PreLuna.EnemyHealthBar",
       "Path": "out/package/BepInEx/plugins/PreLuna.EnemyHealthBar/PreLuna.EnemyHealthBar.dll",
-      "SHA256": "BB8A6A2966261303A8C7A5752AF7A221B2506FDD9A81E68FAFA5710689903851"
+      "SHA256": "431132ECBBC7200228DB1C2BC596E7473CC5DD45C0F972D414B9A9589F2AC3FA"
+    },
+    {
+      "Id": "EnemyHealthBar.DamageNumbers",
+      "Assembly": "PreLuna.EnemyHealthBar.DamageNumbers",
+      "Path": "out/package/BepInEx/plugins/PreLuna.EnemyHealthBar.DamageNumbers/PreLuna.EnemyHealthBar.DamageNumbers.dll",
+      "SHA256": "C23DF9205B226F02AAB5062FE3D735F8766727415EA40AEEAA75BCE85FA6E745"
     }
   ],
   "GameFilesWritten": false,
-  "GameplayTested": false
+  "GameplayTested": false,
+  "Note": "Final 0.3.0/0.1.0 build before the docs-only cleanup; non-document inputs unchanged. The user installed and tested this build on 2026-11-06."
 }

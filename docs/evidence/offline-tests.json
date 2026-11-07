@@ -2,7 +2,10 @@
   "Passed": true,
   "Suites": [
     "EnemyTypeMappingTests",
-    "EnemyBarMathTests"
+    "EnemyBarMathTests",
+    "DamageNumberTests"
   ],
+  "Checks": 17,
+  "LastRun": "2026-11-06",
   "GameplayTested": false
 }

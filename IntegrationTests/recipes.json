@@ -19,5 +19,18 @@
     "Arguments": [
       "out/tests/EnemyBarMathTests.json"
     ]
+  },
+  {
+    "Name": "DamageNumberTests",
+    "Sources": [
+      "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberKind.cs",
+      "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberFormat.cs",
+      "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberStyle.cs",
+      "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberMath.cs",
+      "EnemyHealthBar.DamageNumbers/tests/DamageNumberTests.cs"
+    ],
+    "Arguments": [
+      "out/tests/DamageNumberTests.json"
+    ]
   }
 ]

@@ -4,29 +4,44 @@ This document is the handoff/reuse map for the independent GTFO enemy health bar
 
 ## 1. Scope and status
 
-Version 0.2.0 implements:
+Version 0.3.0 implements:
 
 - focus bar at the crosshair;
 - up to three recent-hit bars (local player only);
 - health, hard-value pips, glue strip, ghost/trail, weakspot tag, status slots;
 - `EnemyType`-based role/Boss classification;
 - profile registry/API for custom enemies;
-- ASCII labels (Chinese dynamic font is still a separate P1.5 task).
+- full local-hit capture and the public `EnemyHitApi.HitRegistered` event;
+- the separate `PreLuna.EnemyHealthBar.DamageNumbers` 0.1.0 sub-mod (IMGUI
+  Division-style stacks built on that event).
 
-User-confirmed on 2026-11-06: focus bar, recent bar, third-person focus bar, foam/F status slot. Not yet verified: client synchronization, Boss/MiniBoss in-game, large hitreact/burn changes, Chinese font, level slot in-game.
+User-confirmed on 2026-11-06: 0.2.0 focus bar, recent bar, third-person focus bar,
+foam/F status slot; 0.3.0 + 0.1.0 installed and reported “测试通过十分满意”
+(overall pass, not a per-feature matrix). Not yet verified: client, Boss/MiniBoss
+in-game, large hitreact/burn changes, Chinese font, level slot in-game, and
+exhaustive damage-number edge cases.
 
 ## 2. Architecture
 
 ```text
 BepInEx plugin (Plugin.cs)
   ├─ EnemyHudConfig                 config entries
-  ├─ Harmony EnemyHitPatch          local BulletDamage/MeleeDamage
+  ├─ Harmony BulletDamagePatch      full local BulletDamage args
+  ├─ Harmony MeleeDamagePatch       full local MeleeDamage args
+  ├─ EnemyHitCapture                before/after, limb type, flags -> EnemyHitApi
   └─ EnemyHudRuntime : MonoBehaviour
       ├─ EnemyFocus                 FPSCamera ray + camera-center fallback
       ├─ EnemyVitalsReader          game fields -> EnemyHudState
       ├─ EnemyRecentBars            local-hit slots + line of sight
       ├─ EnemyHudRenderer           IMGUI, bars, pips, status slots
       └─ EnemyBarMath               pure fraction/trail/fade math
+
+PreLuna.EnemyHealthBar.DamageNumbers (separate assembly)
+  ├─ Plugin                         BepInDependency on 0.3.0
+  ├─ DamageNumberRuntime            event -> per-target stack -> OnGUI
+  ├─ DamageNumberRenderer           IMGUI rows/shadow/kill underline
+  ├─ DamageNumberFont               system-font fallback
+  └─ Core (Format/Style/Math)       pure C#; offline tests
 ```
 
 All Unity reads and drawing happen on the main thread. The pure parts (`EnemyTypeMapping`, `EnemyBarMath`, `EnemyHudProfile`) have no Unity dependency and are covered by offline tests.
@@ -36,18 +51,22 @@ All Unity reads and drawing happen on the main thread. The pure parts (`EnemyTyp
 | Path | Responsibility |
 | --- | --- |
 | `src/Runtime/Plugin.cs` | BepInPlugin identity, config, IL2CPP type registration, Harmony setup/unpatch |
-| `src/Runtime/EnemyHudRuntime.cs` | focus state, fade/ghost, recent bars, OnGUI |
+| `src/Runtime/EnemyHitApi.cs` | Public `EnemyHitInfo` struct, `HitRegistered` event, `HudVisible` |
+| `src/Runtime/EnemyHitPatch.cs` | `EnemyHitCapture`, `BulletDamagePatch`, `MeleeDamagePatch` |
+| `src/Runtime/EnemyHudRuntime.cs` | focus state, fade/ghost, recent bars, OnGUI, `HudVisible` |
 | `src/Runtime/EnemyFocus.cs` | ray selection, local-player collider skip, third-person fallback |
 | `src/Runtime/EnemyVitalsReader.cs` | reads health/hard/glue/weakspot/type and projects the anchor |
 | `src/Runtime/EnemyHudState.cs` | immutable display state and validity/fraction helpers |
 | `src/Runtime/EnemyHudRenderer.cs` | IMGUI rectangles/text, type colors, status/level slots |
 | `src/Runtime/EnemyRecentBars.cs` | 3 recent targets, 3s hold/0.4s fade, visibility check |
-| `src/Runtime/EnemyHitPatch.cs` | Harmony prefixes/postfixes around local damage |
 | `src/Runtime/EnemyHudConfig.cs` | BepInEx config and bounds |
 | `src/Core/EnemyTypeMapping.cs` | mirrors `eEnemyType`; no Unity reference |
 | `src/Core/EnemyBarMath.cs` | fraction/trail/fade math; no Unity reference |
 | `src/Core/EnemyHudProfile.cs` | display-only custom-enemy profile + registry |
 | `src/Core/EnemyHudApi.cs` | public `RegisterProfile`/`UnregisterProfile` API |
+| `EnemyHealthBar.DamageNumbers/src/Core/` | format/style/fade/row math; no Unity reference |
+| `EnemyHealthBar.DamageNumbers/src/Runtime/` | plugin/config/runtime/renderer/system-font fallback |
+| `EnemyHealthBar.DamageNumbers/tests/` | pure damage-number tests |
 | `tests/` | pure tests run by `Test.ps1` |
 
 ## 4. Game data used
@@ -95,18 +114,30 @@ Anchor:
 
 Patch:
 
-- `Dam_EnemyDamageBase.BulletDamage`
-- `Dam_EnemyDamageBase.MeleeDamage`
+- `Dam_EnemyDamageBase.BulletDamage` (`BulletDamagePatch`)
+- `Dam_EnemyDamageBase.MeleeDamage` (`MeleeDamagePatch`)
 
-Prefix records the target pointer and `_Health_k__BackingField` only when the second parameter (`Agent`) is the local player. Postfix reads `_Health/_HealthMax`, ignores non-drops, and calls `EnemyHudRuntime.RegisterHit`.
+Each Prefix captures the full call only when the source `Agent` is the local player:
+`dam`, `precisionMulti`, `limbID`, `position`, `direction`, and
+`_Health_k__BackingField`. Postfix reads `_Health/_HealthMax`, resolves the limb
+type/multiplier, computes applied/raw damage and kill/immune flags, publishes
+`EnemyHitInfo` through `EnemyHitApi.HitRegistered`, and only calls
+`EnemyHudRuntime.RegisterHit` when health actually dropped.
 
 Rules:
 
 - Never write health or send network packets.
-- Use `AccessTools.DeclaredMethod` (the base class has overloads).
+- Use `AccessTools.DeclaredMethod` (the base class has overloads); patch each
+  method type explicitly so one missing target does not block the other.
 - `Harmony.UnpatchAll(id)` is obsolete in this HarmonyX build; use `harmony.UnpatchSelf()`.
 - Recent bars read live health every frame; local damage is only used to choose targets, not to synthesize health.
 - A hit on the currently focused enemy is still registered; the recent bar is skipped while focused, then can appear when the crosshair moves away.
+- Displayed damage is `before - after`; the raw estimate
+  `dam * precisionMulti * limbMulti` is published for later calibration.
+- Back-bonus color is reserved/off until the direction sign is measured.
+- `limbID` uses `0 <= limbID < DamageLimbs.Length`; upstream's `> 0` check is not copied.
+- Event listeners are isolated with try/catch, so a broken sub-mod cannot break the bar.
+- `EnemyHitApi.Clear()` runs on parent unload; the sub-mod unsubscribes in `OnDestroy`.
 
 ## 7. Recent bars / ghost
 
@@ -144,33 +175,46 @@ These were observed on the actual GTFO/BepInEx 6 build:
 ./Test.ps1 -RuntimeRoot 'C:/Program Files/dotnet/shared/Microsoft.NETCore.App/6.0.16'
 ```
 
-- Build: `out/package/BepInEx/plugins/PreLuna.EnemyHealthBar/PreLuna.EnemyHealthBar.dll`.
-- Install: `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar/`.
-- Config: `BepInEx/config/PreLuna.EnemyHealthBar.cfg`.
-- No runtime dependencies; do not load a second enemy-bar mod simultaneously.
+- Build: `out/package/BepInEx/plugins/PreLuna.EnemyHealthBar/PreLuna.EnemyHealthBar.dll` and
+  `out/package/BepInEx/plugins/PreLuna.EnemyHealthBar.DamageNumbers/PreLuna.EnemyHealthBar.DamageNumbers.dll`.
+- Install: both DLLs in `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar/`.
+- Config: `BepInEx/config/PreLuna.EnemyHealthBar.cfg`,
+  `BepInEx/config/PreLuna.EnemyHealthBar.DamageNumbers.cfg`.
+- Parent has no runtime dependencies; do not load a second enemy-bar mod simultaneously.
+  Sub-mod hard-depends on parent 0.3.0; disable old `com.dak.DamageNumbers`.
 
 ## 11. Test matrix
 
-Automated (10 checks):
+Automated (17 checks):
 
-- `EnemyTypeMappingTests`: enum values, unknown mapping, boss-like predicate, labels.
-- `EnemyBarMathTests`: fraction bounds/invalid, ghost trail, fade alpha, profile registry.
+- `EnemyTypeMappingTests`: enum values, unknown mapping, boss-like predicate, labels (5).
+- `EnemyBarMathTests`: fraction bounds/invalid, ghost trail, fade alpha, profile registry (5).
+- `DamageNumberTests`: formatting, rounding, style tiers, fade, row/trim, merge window,
+  expiry, screen scale (7).
 
 Gameplay evidence:
 
 - P0: `Striker_Hibernate`, health 20/20, hard 0/5, glue tolerance 4, glue rel 0→1, stuck true, weakspot ×3, camera `FPSLookCamera`.
 - P1: focus bar on `Striker_Bullrush` and `Shooter_Hibernate [SPEC]`; anchor/scale accepted.
 - P2: first local hit `before=30 after=26.229343 max=30`; user confirmed focus, recent, third-person focus, foam/F status slot.
-
-Still open: client, Boss/MiniBoss in-game, large hitreact/burn, Chinese font, level slot in-game, multi-target clutter.
+- P3: user installed 0.3.0 + 0.1.0 on 2026-11-06 and reported
+  “测试通过十分满意” (overall pass; not a per-feature matrix). The patched
+  fields are logged once as `P3 first local hit: applied=... raw=... limb=...
+  type=... weakspot=... armor=... kill=... immune=...`.
+- Still open: client, Boss/MiniBoss in-game, large hitreact/burn, Chinese font,
+  level slot in-game, multi-target clutter, exhaustive damage-number edge cases.
 
 ## 12. Safe extension points
 
 - Add a display override: `EnemyHudApi.RegisterProfile`.
+- Consume damage facts: `EnemyHitApi.HitRegistered` (`EnemyHitInfo`); do not patch the
+  same methods again unless you need data the parent does not publish.
 - Add a data provider/status: extend `EnemyHudState` and `EnemyVitalsReader`, keep rendering in `EnemyHudRenderer`.
 - Add a new status: append a slot label in `DrawStatusSlots` and a color mapping.
 - Add a layout: keep the state reader unchanged; add a renderer path or a second renderer.
 - Add a custom boss: set `EnemyType` in its `EnemyDataBlock`, or register `IsBoss=true`; do not add a name list.
+- Tune the damage-number stack in `EnemyHealthBar.DamageNumbers/src/Core/` first; the
+  runtime only projects positions and draws.
 
 ## 13. References
 
@@ -178,3 +222,6 @@ Still open: client, Boss/MiniBoss in-game, large hitreact/burn, Chinese font, le
 - HawChow EnemyHealthBar / KillFeed: focus/occlusion, head anchor, weakspot/glue-tag behavior reference (no explicit license found; no code copied).
 - EnemyBossbars: boss event/config reference (not adopted; native `EnemyType` is used).
 - DamageSync: host/client health-sync caveat reference (not a dependency).
+- GTFO-Modding/DamageNumbers + FloatingTextAPI (MIT, Copyright (c) 2022 Dak): local-hit
+  hook/parameter flow and armor/weakspot classification reference; no FloatingTextAPI
+  dependency, TMP asset bundle, or Random-3D-float presentation is shipped.

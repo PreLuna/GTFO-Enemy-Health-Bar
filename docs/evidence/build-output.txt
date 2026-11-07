@@ -1,1 +1,4 @@
-COMPILED PreLuna.EnemyHealthBar.dll (local build; absolute paths omitted)
+COMPILED PreLuna.EnemyHealthBar.dll (0.3.0)
+COMPILED PreLuna.EnemyHealthBar.DamageNumbers.dll (0.1.0)
+2 assemblies verified; 17 offline checks passed.
+(local build; absolute paths omitted; game files not written)

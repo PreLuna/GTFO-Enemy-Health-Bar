@@ -1,6 +1,7 @@
 using System;
 using Enemies;
 using Player;
+using PreLuna.EnemyHealthBar.Api;
 using PreLuna.EnemyHealthBar.Core;
 using UnityEngine;
 
@@ -21,7 +22,6 @@ namespace PreLuna.EnemyHealthBar.Runtime
         bool hidden;
         bool failed;
         bool loggedDraw;
-        bool loggedHit;
 
         public EnemyHudRuntime(IntPtr pointer) : base(pointer) { }
 
@@ -34,17 +34,21 @@ namespace PreLuna.EnemyHealthBar.Runtime
             lastTarget = IntPtr.Zero;
             hidden = false;
             failed = false;
+            EnemyHitApi.HudVisible = false;
         }
 
         void Update()
         {
-            if (config == null || failed) return;
+            if (config == null || failed)
+            {
+                EnemyHitApi.HudVisible = false;
+                return;
+            }
             try
             {
-                if (config.ToggleKey != KeyCode.None && Input.GetKeyDown(config.ToggleKey))
-                    hidden = !hidden;
-                if (hidden || GameStateManager.CurrentStateName != eGameStateName.InLevel)
+                if (!config.Enabled)
                 {
+                    EnemyHitApi.HudVisible = false;
                     alpha = 0f;
                     state = default;
                     lastTarget = IntPtr.Zero;
@@ -53,6 +57,20 @@ namespace PreLuna.EnemyHealthBar.Runtime
                     recent.Clear();
                     return;
                 }
+                if (config.ToggleKey != KeyCode.None && Input.GetKeyDown(config.ToggleKey))
+                    hidden = !hidden;
+                if (hidden || GameStateManager.CurrentStateName != eGameStateName.InLevel)
+                {
+                    EnemyHitApi.HudVisible = false;
+                    alpha = 0f;
+                    state = default;
+                    lastTarget = IntPtr.Zero;
+                    focusGhost = 0f;
+                    lastFocusFraction = 0f;
+                    recent.Clear();
+                    return;
+                }
+                EnemyHitApi.HudVisible = true;
 
                 float dt = Mathf.Clamp(Time.deltaTime, .001f, .1f);
                 bool found = EnemyFocus.TryFind(out _, out var target, out var camera, config.MaxDistance);
@@ -92,26 +110,22 @@ namespace PreLuna.EnemyHealthBar.Runtime
             catch (Exception error)
             {
                 failed = true;
+                EnemyHitApi.HudVisible = false;
                 Plugin.Instance?.LogSource?.LogWarning("HUD update failed: " + error.Message);
             }
         }
 
         internal void RegisterHit(Dam_EnemyDamageBase damage, float before, float after, float max)
         {
-            if (config == null || hidden) return;
+            if (config == null || hidden || !config.Enabled) return;
             // Register even the focused enemy: it is skipped while focused, then can
             // appear as a recent bar if the crosshair moves away before it expires.
             recent.Register(damage, before, after, max);
-            if (!loggedHit)
-            {
-                loggedHit = true;
-                Plugin.Instance?.LogSource?.LogInfo("P2 first local hit: before=" + before + " after=" + after + " max=" + max);
-            }
         }
 
         void OnGUI()
         {
-            if (config == null || hidden) return;
+            if (config == null || hidden || !config.Enabled) return;
             if (Event.current == null || Event.current.type != EventType.Repaint) return;
             try
             {
@@ -136,6 +150,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
         void OnDestroy()
         {
             if (ReferenceEquals(Current, this)) Current = null;
+            EnemyHitApi.HudVisible = false;
             recent.Clear();
             try { renderer.Dispose(); } catch { }
         }
