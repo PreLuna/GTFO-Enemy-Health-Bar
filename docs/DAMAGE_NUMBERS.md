@@ -1,6 +1,6 @@
 # Damage numbers sub-mod
 
-This is the implementation note for `PreLuna.EnemyHealthBar.DamageNumbers` 0.1.0.
+This is the implementation note for `PreLuna.EnemyHealthBar.DamageNumbers` 0.1.1.
 Visual sources and measured colors are in the workspace
 `研究截图/伤害数字_参考/`; the design rationale is in
 `研究资料/伤害数字-20261106/研究结论.md` (workspace paths, not shipped here).

@@ -21,6 +21,27 @@
     ]
   },
   {
+    "Name": "EnemyHudControlTests",
+    "Sources": [
+      "EnemyHealthBar/src/Control/EnemyHudControlModels.cs",
+      "EnemyHealthBar/src/Control/EnemyHudControlState.cs",
+      "EnemyHealthBar/tests/EnemyHudControlTests.cs"
+    ],
+    "Arguments": [
+      "out/tests/EnemyHudControlTests.json"
+    ]
+  },
+  {
+    "Name": "EnemyHudConfigFileStoreTests",
+    "Sources": [
+      "EnemyHealthBar/src/Control/EnemyHudConfigFileStore.cs",
+      "EnemyHealthBar/tests/EnemyHudConfigFileStoreTests.cs"
+    ],
+    "Arguments": [
+      "out/tests/EnemyHudConfigFileStoreTests.json"
+    ]
+  },
+  {
     "Name": "DamageNumberTests",
     "Sources": [
       "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberKind.cs",

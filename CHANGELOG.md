@@ -1,5 +1,27 @@
 # Changelog
 
+## EnemyHealthBar 0.4.0 — C4 update — 2026-11-08
+
+- Add `EnemyHudConfigFileStore`: line-preserving config updates, temp-file replace,
+  unknown keys/comments/sections preserved.
+- Disable `ConfigFile.SaveOnConfigSet`; target P/R rollback on save failure.
+- Tests: 5 config-store + 7 control/rollback; target total 29 after C4 cleanup.
+- Removed unused ApplyTemporary/SavePersistent/RestoreSaved APIs and overrides; only
+  Validate/SetPersistent remains.
+- User-confirmed target persistence/restart readback; ModControl page initialization
+  handled on the ModControl side.
+
+## EnemyHealthBar 0.4.0 — 2026-11-07
+
+- Parent: add `PreLuna.EnemyHealthBar.Control` snapshot/validate/apply/persist API for ModControl C3.
+- Parent: 8 controlled settings (Enabled, MaxDistance, Width, Height, Opacity, ShowName,
+  ShowNumbers, ShowStatusSlots) declare `ImmediateAutoSave`; `SetPersistent` updates P+R.
+- Parent: remove the page-level restore-default API; the TheArchive sub-menu button could not
+  be triggered reliably and C3 does not include restore-default.
+- Sub-mod: dependency updated to parent 0.4.0; install parent and sub-mod in separate directories.
+- Build/test: 2 assemblies, 28 offline checks (5 + 5 + 11 + 7); ModControl C3 user-confirmed
+  auto-save changes; restore-default excluded.
+
 ## EnemyHealthBar 0.3.0 / EnemyHealthBar.DamageNumbers 0.1.0 — 2026-11-06
 
 - Parent: full local-hit capture (`BulletDamage`/`MeleeDamage`): hit point/direction,

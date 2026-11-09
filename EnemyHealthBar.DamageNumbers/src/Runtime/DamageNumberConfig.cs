@@ -41,6 +41,13 @@ namespace PreLuna.EnemyHealthBar.DamageNumbers.Runtime
             showKillFlash = config.Bind("Display", "ShowKillFlash", true, "击杀时显示红色短下划。");
         }
 
+        internal ConfigEntry<bool> EnabledEntry => enabled;
+        internal ConfigEntry<int> MaxRowsEntry => maxRows;
+        internal ConfigEntry<float> LifetimeEntry => lifetime;
+        internal ConfigEntry<float> FontSizeEntry => fontSize;
+        internal ConfigEntry<float> MaxDistanceEntry => maxDistance;
+        internal ConfigEntry<bool> ShowArmorEntry => showArmor;
+
         internal bool Enabled => enabled.Value;
         internal KeyCode ToggleKey => toggleKey.Value;
         internal int MaxRows => Mathf.Clamp(maxRows.Value, 1, 12);

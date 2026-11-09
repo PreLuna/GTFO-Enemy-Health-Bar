@@ -3,11 +3,12 @@
 独立敌人血条插件及其全境封锁风格伤害数字子 MOD。不依赖第三人称镜头/HUD、
 ForgeUI、ForgeCore 或 DamageSync。
 
-- 父 MOD：**EnemyHealthBar 0.3.0**（P1 焦点 + P2 最近命中 + P3 完整命中事件 API）
-- 子 MOD：**EnemyHealthBar.DamageNumbers 0.1.0**（命中点数字、右对齐连击列）
+- 父 MOD：**EnemyHealthBar 0.4.0**（P1 焦点 + P2 最近命中 + P3 完整命中事件 API + C3 控制快照）
+- 子 MOD：**EnemyHealthBar.DamageNumbers 0.1.1（6字段可写）**（命中点数字、右对齐连击列；硬依赖父 0.4.0）
 - 程序集：`PreLuna.EnemyHealthBar`、`PreLuna.EnemyHealthBar.DamageNumbers`
-- 游戏目标：`BepInEx/plugins/PreLuna.EnemyHealthBar/`（本工作区本地化布局为
-  `本地定制/PreLuna.EnemyHealthBar/`；两个 DLL 放同一目录）
+- 游戏目标：父 DLL 放 `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar/`，
+  子 DLL 放 `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar.DamageNumbers/`；
+  不要把子 DLL 再复制进父目录，否则会重复加载。
 - 目标游戏：GTFO + BepInEx 6 IL2CPP（本机 6.0.0-be.697）
 
 ## 当前功能
@@ -67,9 +68,10 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
 ## 安装
 
 1. 退出游戏。
-2. 把两个 DLL 放到同一插件目录（本工作区使用 `本地定制/PreLuna.EnemyHealthBar/`）：
-   - `PreLuna.EnemyHealthBar.dll`
-   - `PreLuna.EnemyHealthBar.DamageNumbers.dll`
+2. 分别放到两个目录：
+   - `本地定制/PreLuna.EnemyHealthBar/PreLuna.EnemyHealthBar.dll`
+   - `本地定制/PreLuna.EnemyHealthBar.DamageNumbers/PreLuna.EnemyHealthBar.DamageNumbers.dll`
+   - **不要**把子 DLL 同时放在父目录；BepInEx 会递归扫描，重复副本会导致版本冲突。
 3. 启动游戏；父 MOD 默认 `PageDown` 开关血条/数字显隐。
 4. 如果还装着旧 HawChow `GTFOEnemyHealthBar.dll`，先移出/停用，避免双份血条。
 5. 如果还装着旧 `DamageNumbers-伤害数字/DamageNumbers.dll`，停用/移出，避免两套伤害数字。
@@ -123,7 +125,30 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
 ```
 
 当前离线测试：`EnemyTypeMappingTests` 5 项、`EnemyBarMathTests` 5 项、
-`DamageNumberTests` 7 项，共 17 项。构建输出只在 `out/`；不自动写游戏目录。
+`EnemyHudControlTests` 7 项（目标控制/保存回滚）、`EnemyHudConfigFileStoreTests` 5 项（安全行级存储）、`DamageNumberTests` 7 项，共 29 项。
+构建输出只在 `out/`；不自动写游戏目录。
+
+## C3 控制接口
+
+父 MOD 0.4.0 新增 `PreLuna.EnemyHealthBar.Control`：
+
+- `EnemyHealthBarControlApi.GetSnapshot/Validate/SetPersistent`；
+- `EnemyHudControlState` 保存 P／R／T、修订号和设置策略；
+- 8 个设置项声明为 `ImmediateAutoSave`：修改后直接更新运行值并写配置；
+- 页面级“恢复全部设置”接口已删除（TheArchive 子菜单按钮实测无法稳定触发，C3 不提供恢复默认）；
+- 未装 ModControl 时，父 MOD 仍按原配置独立运行。
+
+## C4 安全持久化
+
+父 MOD 0.4.0 的 C4 改动：
+
+- `ConfigFile.SaveOnConfigSet=false`，不再由 BepInEx 自动整文件重写；
+- `EnemyHudConfigFileStore` 只更新受管键所在行，保留注释、未知键、未知段和其他行；
+- 同目录临时文件＋`File.Replace`，失败保留原文件；
+- `SetPersistent` 保存失败时回滚 ConfigEntry 与内存 P／R；
+- 测试：安全行级存储 5 项、控制/回滚 7 项；目标仓共 29 项（C4 清理后）。
+
+实机已验证：目标 CFG 值写入/重启读回，哨兵注释与未知键保留；页面控件重启初始化由 ModControl 共享值层处理。
 
 ## 验证状态
 

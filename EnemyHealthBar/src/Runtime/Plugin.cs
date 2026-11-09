@@ -10,9 +10,10 @@ namespace PreLuna.EnemyHealthBar.Runtime
     [BepInPlugin(Id, "PreLuna Enemy Health Bar", Version)]
     public sealed class Plugin : BasePlugin
     {
-        public const string Id = "PreLuna.EnemyHealthBar", Version = "0.3.0";
+        public const string Id = "PreLuna.EnemyHealthBar", Version = "0.4.0";
         internal static Plugin Instance;
         internal ManualLogSource LogSource;
+        internal EnemyHudConfig HudConfig;
         EnemyHudRuntime runtime;
         Harmony harmony;
 
@@ -22,7 +23,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
             LogSource = Log;
             try
             {
-                var config = new EnemyHudConfig(Config);
+                HudConfig = new EnemyHudConfig(Config);
+                var config = HudConfig;
                 ClassInjector.RegisterTypeInIl2Cpp<EnemyHudRuntime>();
                 runtime = AddComponent<EnemyHudRuntime>();
                 runtime.Initialize(config);
@@ -56,6 +58,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
             try { harmony?.UnpatchSelf(); } catch { }
             harmony = null;
             EnemyHitApi.Clear();
+            HudConfig = null;
             var current = runtime; runtime = null;
             if (current != null) UnityEngine.Object.Destroy(current);
             if (ReferenceEquals(Instance, this)) Instance = null;

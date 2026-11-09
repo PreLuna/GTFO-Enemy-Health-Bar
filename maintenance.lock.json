@@ -19,12 +19,12 @@
     },
     {
       "Path": "CHANGELOG.md",
-      "SHA256": "7F3327B7FFCB349C1119018F066905D30D2B35A6EE00F3719D0874C2F0F12DA7",
-      "Bytes": 2320
+      "SHA256": "EA35D58CA40F4FD0C06DEE81B9CA07E98090611C1B33E48822EEF161CE2FECF9",
+      "Bytes": 3618
     },
     {
       "Path": "docs/DAMAGE_NUMBERS.md",
-      "SHA256": "7BCA3D1EF7E59041063FEB6017670B7A08D3AA770D2FBBC5061345ADE365B47C",
+      "SHA256": "0FC2D7192AAAEA2846CF5B33BC5E5A7881E18A50CC78A26F95B88DEE60E7CA63",
       "Bytes": 5678
     },
     {
@@ -98,6 +98,31 @@
       "Bytes": 6684
     },
     {
+      "Path": "EnemyHealthBar.DamageNumbers/说明.md",
+      "SHA256": "4C100DB30F216F1E1509BA7B1CA9FD447F2DE450440761AF17FC0E2089DC6981",
+      "Bytes": 1082
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Control/DamageNumberControlApi.cs",
+      "SHA256": "D30B47F518C341450B1D214024D630C431AB321A150BA273A2D7D22710CF7C3D",
+      "Bytes": 9679
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Control/DamageNumberControlFileStore.cs",
+      "SHA256": "A21A8CD52C82BF102667FFAFA6366DEEE5C315D293540743FB70ECC532F49332",
+      "Bytes": 5219
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Control/DamageNumberControlModels.cs",
+      "SHA256": "CD60645395D22D7BC6EB13AAA7AADE79AF74494919B50617D996494CBD41A285",
+      "Bytes": 8707
+    },
+    {
+      "Path": "EnemyHealthBar.DamageNumbers/src/Control/DamageNumberControlState.cs",
+      "SHA256": "D227B75AB0308D5C8E629D228774DF63D1F1F0A29786058ABB2278F1BBCD95DC",
+      "Bytes": 10769
+    },
+    {
       "Path": "EnemyHealthBar.DamageNumbers/src/Core/DamageNumberFormat.cs",
       "SHA256": "5234D2229880DD3423B9074E25322F43627BDFEF6B388D668B2CF709BD0833B3",
       "Bytes": 992
@@ -119,8 +144,8 @@
     },
     {
       "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/DamageNumberConfig.cs",
-      "SHA256": "2274B2236A48C961603B6BC0A47408FD1E976905E6AFD5FB644B8DC636338040",
-      "Bytes": 3642
+      "SHA256": "32CDD1CF6A5818D5CAE9937F48716B8112550BE760C90A3F6C07B0B37FE94BF9",
+      "Bytes": 4021
     },
     {
       "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/DamageNumberFont.cs",
@@ -139,13 +164,38 @@
     },
     {
       "Path": "EnemyHealthBar.DamageNumbers/src/Runtime/Plugin.cs",
-      "SHA256": "C36D9F64902B0F92DE5AE711C82D72810AACD64437617CB2A426F649E4C7AC51",
-      "Bytes": 2243
+      "SHA256": "4E0EC55AF3054C7C630FE3D84A19DC5B7A5158B1A32CABC74DA5E2D87155C5E9",
+      "Bytes": 5178
     },
     {
       "Path": "EnemyHealthBar.DamageNumbers/tests/DamageNumberTests.cs",
       "SHA256": "165D441E7AEE61D8931DCCA713504B672F485894D641ED8B28A843A74EAA87C0",
       "Bytes": 5106
+    },
+    {
+      "Path": "EnemyHealthBar/说明.md",
+      "SHA256": "FEF1099263C2F482ACA8C54BE8EBC554BF870D604C114929335051037B995690",
+      "Bytes": 1151
+    },
+    {
+      "Path": "EnemyHealthBar/src/Control/EnemyHealthBarControlApi.cs",
+      "SHA256": "6C3177AF08DBFD0762B684666C905518B9C5CA6216094E4658205DCF2B3F4EEB",
+      "Bytes": 1385
+    },
+    {
+      "Path": "EnemyHealthBar/src/Control/EnemyHudConfigFileStore.cs",
+      "SHA256": "BFA4D5E271B115D48FD019253C6BAFCE837C411B49D01632CAF6713A3FAF4E92",
+      "Bytes": 4354
+    },
+    {
+      "Path": "EnemyHealthBar/src/Control/EnemyHudControlModels.cs",
+      "SHA256": "037456F28F84E14404DE4831D5BFD921501A759085CE8AE18A8D9A6C65C58484",
+      "Bytes": 8169
+    },
+    {
+      "Path": "EnemyHealthBar/src/Control/EnemyHudControlState.cs",
+      "SHA256": "640E648228CF7E5CE424BCE1A387C0838C2AEC323F18E1FE810A7B3D2C2FE248",
+      "Bytes": 8422
     },
     {
       "Path": "EnemyHealthBar/src/Core/EnemyBarMath.cs",
@@ -184,8 +234,8 @@
     },
     {
       "Path": "EnemyHealthBar/src/Runtime/EnemyHudConfig.cs",
-      "SHA256": "0A408F627907219F81F56DFC4FA768A2F61B7ED86A755EC8A360D8DD8A11B898",
-      "Bytes": 4707
+      "SHA256": "BE3529E00BD66D4A0639A5408E0648DC39FAF824E4D5EC53EE1B63707707DD1C",
+      "Bytes": 8603
     },
     {
       "Path": "EnemyHealthBar/src/Runtime/EnemyHudRenderer.cs",
@@ -214,13 +264,23 @@
     },
     {
       "Path": "EnemyHealthBar/src/Runtime/Plugin.cs",
-      "SHA256": "452E90B19C7EE6E075F4FDAB52955BA49909537802F6155D88713F4A6961CB33",
-      "Bytes": 2182
+      "SHA256": "375F55AC02CEF114642941BF4B08BE75A2D3A49BADFE0D97EEC950495E992BFC",
+      "Bytes": 2294
     },
     {
       "Path": "EnemyHealthBar/tests/EnemyBarMathTests.cs",
       "SHA256": "C63C4E269DBE560374394C1E7D827B2E87840D7271E0A52819235C16933A6FDD",
       "Bytes": 3349
+    },
+    {
+      "Path": "EnemyHealthBar/tests/EnemyHudConfigFileStoreTests.cs",
+      "SHA256": "7F2B8E8C7FA3A0C547B7E3E364A13764BAABE6965936A6985580A04C19750BFF",
+      "Bytes": 4820
+    },
+    {
+      "Path": "EnemyHealthBar/tests/EnemyHudControlTests.cs",
+      "SHA256": "45A5541E1245F11BD33ACD35012BD4E70827BBF9C4D7552CE8D232BFFFE52B53",
+      "Bytes": 6538
     },
     {
       "Path": "EnemyHealthBar/tests/EnemyTypeMappingTests.cs",
@@ -229,17 +289,17 @@
     },
     {
       "Path": "IntegrationTests/recipes.json",
-      "SHA256": "549794DF568DE6071F67732566CA3F85D7156A719F59AB87C50B45C4B08EBD33",
-      "Bytes": 1000
+      "SHA256": "DDAD7E0C2C956967EE1A4E0DFD0AE5D91C2BB875D7C3B8C8FE36DC883BE3F3E3",
+      "Bytes": 1590
     },
     {
       "Path": "README.md",
-      "SHA256": "25A2CCD5ED3BDA6BDD10769709A4F53718FF3EF6056DE2C465F26143E00107BF",
-      "Bytes": 8851
+      "SHA256": "6847871C26A682D8DCB0223E6BC9BE8375230CD150D2CCD8E77F95EE206D360C",
+      "Bytes": 10387
     },
     {
       "Path": "repo.json",
-      "SHA256": "C690648E8723A1132DEBB0ED01E7A01E7B1265162DEB6A6146B18C44AE7B9689",
+      "SHA256": "6429B647B43A466766753916606B88CC521C127FAF0C0FD65033DEF53F38065A",
       "Bytes": 1450
     },
     {
