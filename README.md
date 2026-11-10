@@ -15,8 +15,8 @@ ForgeUI、ForgeCore 或 DamageSync。
 
 ### 血条
 
-- 准星焦点单条血条：名称、`EnemyType` 分类、生命、硬直白段、结沫青条、端括号、弱点/燃烧/结沫/标记/不可推动标签、淡入淡出。
-- 最近命中副条：最多 3 条，命中后 3s 保持、0.4s 淡出；读取游戏实时生命，不按本地伤害累计。
+- 准星焦点单条血条：名称、`EnemyType` 分类、生命、硬直白段（空槽有描边，0 累计也可见；命中累计达到硬直阈值时 4 格短暂全亮 0.22s）、结沫青条、端括号、弱点/燃烧/结沫/标记/不可推动标签、淡入淡出。
+- 最近命中副条：最多 3 条，命中后 3s 保持、0.4s 淡出；读取游戏实时生命，不按本地伤害累计。焦点目标在焦点期间不画副条，准星移开后在保持窗口内仍可出现。
 - 掉血残影：生命下降后保留浅灰残影并收缩。
 - `EnemyType` 原生分类：`Weakling/Standard/Special/MiniBoss/Boss`；Boss/MiniBoss **只随焦点/最近命中显示，不做常驻条**。
 - 自定义敌人接口：`PreLuna.EnemyHealthBar.Api.EnemyHudApi.RegisterProfile(...)`，可按 `EnemyDataID`/`EnemyDataBlock.name` 覆盖显示名、角色、Tier、Boss 标记、锚点偏移和额外状态槽。
@@ -124,8 +124,8 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
 ./Test.ps1 -RuntimeRoot 'C:/Program Files/dotnet/shared/Microsoft.NETCore.App/6.0.16'
 ```
 
-当前离线测试：`EnemyTypeMappingTests` 5 项、`EnemyBarMathTests` 5 项、
-`EnemyHudControlTests` 7 项（目标控制/保存回滚）、`EnemyHudConfigFileStoreTests` 5 项（安全行级存储）、`DamageNumberTests` 7 项，共 29 项。
+当前离线测试：`EnemyTypeMappingTests` 5 项、`EnemyBarMathTests` 6 项、
+`EnemyHudControlTests` 7 项（目标控制/保存回滚）、`EnemyHudConfigFileStoreTests` 5 项（安全行级存储）、`DamageNumberTests` 7 项，共 30 项。
 构建输出只在 `out/`；不自动写游戏目录。
 
 ## C3 控制接口
@@ -160,6 +160,8 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
   证据见 [docs/evidence/user-acceptance-20261106.txt](docs/evidence/user-acceptance-20261106.txt)。
   仍未单独覆盖：客机、Boss/MiniBoss、中文动态字体、等级虚线框，以及伤害数字的逐项
   极限场景；这些不冒充已验收。
+- 2026-11-10：修复焦点期间最近命中副条叠画（副条键改为 `EnemyAgent.Pointer`），硬直空槽改为可见描边；用户实机确认副条与空槽正常。武器攻击时 `HARD` 仍长时间显示 0/5，属游戏 `m_damBuildToHitreact` 累计/采样时机，渲染侧未改。
+- 2026-11-10：新增硬直阈值触发闪示（`applied×staggerMulti ≥ DamageUntilHitreact` 时 4 格全亮 0.22s，随后回真实余量）；构建与 30 项离线测试通过，已由用户实机确认正常。
 
 ## 当前限制
 

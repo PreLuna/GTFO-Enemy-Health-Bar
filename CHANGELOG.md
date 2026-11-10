@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — 2026-11-10
+
+- Fix: a hit on the focused enemy no longer draws a second (compact) recent bar on top
+  of the focus bar. Recent entries are keyed by `EnemyAgent.Pointer`, the same identity
+  the focus bar compares against.
+- Hard pips: outline every cell so four empty slots remain visible at `HARD 0/5`; filled
+  cells stay white. No version bump with this change.
+- Hard pips: a local hit whose `applied × staggerMulti` reaches `DamageUntilHitreact`
+  flashes all four cells for 0.22 s and then returns to the live value. Display-only;
+  no synthetic accumulation. Adds `EnemyBarMath.HardTrigger` and an offline case.
+
 ## EnemyHealthBar 0.4.0 — C4 update — 2026-11-08
 
 - Add `EnemyHudConfigFileStore`: line-preserving config updates, temp-file replace,

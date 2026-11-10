@@ -11,7 +11,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
         readonly string[] statusLabels = new string[6];
         bool initialized;
 
-        internal void Draw(in EnemyHudState state, EnemyHudConfig config, float alpha, bool compact = false, float ghostFraction = -1f)
+        internal void Draw(in EnemyHudState state, EnemyHudConfig config, float alpha, bool compact = false, float ghostFraction = -1f, float hardFlash = -1f)
         {
             Ensure();
             if (!initialized || pixel == null || style == null || alpha <= .001f) return;
@@ -46,12 +46,25 @@ namespace PreLuna.EnemyHealthBar.Runtime
                 float gap = 3f * scale;
                 float pw = (width - gap * (pips - 1)) / pips;
                 float py = barY - 8f * scale;
-                float fill = state.HardFraction * pips;
+                float ph = 4f * scale;
+                float hardFraction = hardFlash >= 0f
+                    ? Mathf.Clamp01(Mathf.Max(state.HardFraction, hardFlash))
+                    : state.HardFraction;
+                float fill = hardFraction * pips;
+                float edge = Mathf.Max(1f, scale);
+                var edgeColor = new Color(.55f, .59f, .62f, .9f * a);
+                var trackColor = new Color(.12f, .14f, .16f, .85f * a);
                 for (int i = 0; i < pips; i++)
                 {
-                    DrawRect(new Rect(x + i * (pw + gap), py, pw, 4f * scale), new Color(.12f, .14f, .16f, .7f * a));
+                    var slot = new Rect(x + i * (pw + gap), py, pw, ph);
+                    DrawRect(slot, trackColor);
                     float part = Mathf.Clamp01(fill - i);
-                    if (part > 0f) DrawRect(new Rect(x + i * (pw + gap), py, pw * part, 4f * scale), new Color(.95f, .96f, .98f, a));
+                    if (part > 0f) DrawRect(new Rect(slot.x, slot.y, pw * part, ph), new Color(.95f, .96f, .98f, a));
+                    // Empty pips stay visible at zero build: outline every cell.
+                    DrawRect(new Rect(slot.x, slot.y, slot.width, edge), edgeColor);
+                    DrawRect(new Rect(slot.x, slot.yMax - edge, slot.width, edge), edgeColor);
+                    DrawRect(new Rect(slot.x, slot.y, edge, slot.height), edgeColor);
+                    DrawRect(new Rect(slot.xMax - edge, slot.y, edge, slot.height), edgeColor);
                 }
             }
 

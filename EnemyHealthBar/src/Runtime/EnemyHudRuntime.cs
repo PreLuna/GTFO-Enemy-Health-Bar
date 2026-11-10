@@ -18,6 +18,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
         float lastSeen;
         float focusGhost;
         float lastFocusFraction;
+        float focusHardFlashUntil;
+        float focusHardFlashFraction;
         IntPtr lastTarget;
         bool hidden;
         bool failed;
@@ -31,6 +33,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
             config = settings;
             alpha = 0f;
             lastSeen = float.NegativeInfinity;
+            focusHardFlashUntil = 0f;
+            focusHardFlashFraction = 0f;
             lastTarget = IntPtr.Zero;
             hidden = false;
             failed = false;
@@ -54,6 +58,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
                     lastTarget = IntPtr.Zero;
                     focusGhost = 0f;
                     lastFocusFraction = 0f;
+                    focusHardFlashUntil = 0f;
+                    focusHardFlashFraction = 0f;
                     recent.Clear();
                     return;
                 }
@@ -67,6 +73,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
                     lastTarget = IntPtr.Zero;
                     focusGhost = 0f;
                     lastFocusFraction = 0f;
+                    focusHardFlashUntil = 0f;
+                    focusHardFlashFraction = 0f;
                     recent.Clear();
                     return;
                 }
@@ -81,6 +89,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
                         alpha = Mathf.Min(alpha, .35f);
                         focusGhost = next.HealthFraction;
                         lastFocusFraction = next.HealthFraction;
+                        focusHardFlashUntil = 0f;
+                        focusHardFlashFraction = 0f;
                     }
                     else
                     {
@@ -103,6 +113,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
                         lastTarget = IntPtr.Zero;
                         focusGhost = 0f;
                         lastFocusFraction = 0f;
+                        focusHardFlashUntil = 0f;
+                        focusHardFlashFraction = 0f;
                     }
                 }
                 if (camera != null) recent.Update(camera);
@@ -115,12 +127,22 @@ namespace PreLuna.EnemyHealthBar.Runtime
             }
         }
 
-        internal void RegisterHit(Dam_EnemyDamageBase damage, float before, float after, float max)
+        internal void RegisterHit(Dam_EnemyDamageBase damage, float before, float after, float max, bool hardTrigger)
         {
             if (config == null || hidden || !config.Enabled) return;
+            if (hardTrigger && damage != null)
+            {
+                EnemyAgent owner = null;
+                try { owner = damage.Owner; } catch { }
+                if (owner != null && owner.Pointer == lastTarget)
+                {
+                    focusHardFlashUntil = Time.time + EnemyRecentBars.HardFlashSeconds;
+                    focusHardFlashFraction = 1f;
+                }
+            }
             // Register even the focused enemy: it is skipped while focused, then can
             // appear as a recent bar if the crosshair moves away before it expires.
-            recent.Register(damage, before, after, max);
+            recent.Register(damage, before, after, max, hardTrigger);
         }
 
         void OnGUI()
@@ -136,7 +158,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
                         loggedDraw = true;
                         Plugin.Instance?.LogSource?.LogInfo("P1 first draw: " + state.Name + " type=" + state.TypeLabel + " hp=" + state.Health + "/" + state.HealthMax);
                     }
-                    renderer.Draw(state, config, alpha, ghostFraction: focusGhost);
+                    renderer.Draw(state, config, alpha, ghostFraction: focusGhost,
+                        hardFlash: focusHardFlashUntil > Time.time ? focusHardFlashFraction : -1f);
                 }
                 recent.Draw(renderer, config, lastTarget);
             }

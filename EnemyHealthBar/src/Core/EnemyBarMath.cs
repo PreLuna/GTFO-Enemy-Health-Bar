@@ -28,5 +28,18 @@ namespace PreLuna.EnemyHealthBar.Core
             if (!float.IsFinite(fade) || fade <= 0f) return 0f;
             return Math.Clamp(1f - (age - hold) / fade, 0f, 1f);
         }
+
+        // True when a local hit's stagger contribution reaches the enemy's
+        // hitreact threshold. The game may consume the value in the same damage
+        // call, so this is computed from the pre-hit value and the damage call.
+        public static bool HardTrigger(float hardBefore, float applied, float staggerMulti, float hardMax)
+        {
+            if (!float.IsFinite(hardBefore) || !float.IsFinite(applied)
+                || !float.IsFinite(staggerMulti) || !float.IsFinite(hardMax)) return false;
+            if (hardBefore < 0f || applied <= 0f || staggerMulti <= 0f || hardMax <= 0f) return false;
+            float added = applied * staggerMulti;
+            if (!float.IsFinite(added)) return false;
+            return hardBefore + added >= hardMax;
+        }
     }
 }

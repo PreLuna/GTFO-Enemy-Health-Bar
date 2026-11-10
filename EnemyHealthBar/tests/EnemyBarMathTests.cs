@@ -55,6 +55,17 @@ static class EnemyBarMathTests
             Check(!EnemyHudProfileRegistry.Register(new EnemyHudProfile("", "x", "", "", null, 0f, 0)));
             Check(EnemyHudProfileRegistry.Count == 0);
         });
+        Case("hard-trigger-threshold", () =>
+        {
+            Check(!EnemyBarMath.HardTrigger(0f, .9832916f, 5f, 5f), "partial buildup must not trigger");
+            Check(EnemyBarMath.HardTrigger(4.916382f, 2.1829567f, 5f, 5f), "crossing must trigger");
+            Check(EnemyBarMath.HardTrigger(0f, 1f, 5f, 5f), "exact threshold must trigger");
+            Check(!EnemyBarMath.HardTrigger(0f, 0f, 5f, 5f), "zero applied");
+            Check(!EnemyBarMath.HardTrigger(-1f, 2f, 5f, 5f), "unreadable before");
+            Check(!EnemyBarMath.HardTrigger(0f, 2f, 0f, 5f), "zero stagger");
+            Check(!EnemyBarMath.HardTrigger(0f, 2f, 5f, 0f), "zero max");
+            Check(!EnemyBarMath.HardTrigger(float.NaN, 2f, 5f, 5f), "nan");
+        });
 
         bool passed = Results.All(x => x.Passed);
         File.WriteAllText(args[0], JsonSerializer.Serialize(new { Passed = passed, Count = Results.Count, Results, GameplayTested = false },

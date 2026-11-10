@@ -13,6 +13,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
         const float Hold = 3f;
         const float Fade = .4f;
         const float SightInterval = .1f;
+        internal const float HardFlashSeconds = .22f;
 
         sealed class Entry
         {
@@ -22,20 +23,24 @@ namespace PreLuna.EnemyHealthBar.Runtime
             internal float NextSight;
             internal float Ghost;
             internal float LastFraction;
+            internal float HardFlashUntil;
+            internal float HardFlashFraction;
             internal bool Visible;
             internal EnemyHudState State;
         }
 
         readonly Entry[] entries = new Entry[Capacity];
 
-        internal void Register(Dam_EnemyDamageBase damage, float before, float after, float max)
+        internal void Register(Dam_EnemyDamageBase damage, float before, float after, float max, bool hardTrigger)
         {
             if (damage == null || after <= 0f) return;
             EnemyAgent owner;
             try { owner = damage.Owner; } catch { return; }
             if (owner == null || !owner.Alive) return;
 
-            var key = damage.Pointer;
+            // Focus bars are keyed by EnemyAgent.Pointer; use the same identity for
+            // the recent entry so the focused target is actually skipped in Draw.
+            var key = owner.Pointer;
             int slot = Find(key);
             if (slot < 0)
             {
@@ -54,6 +59,11 @@ namespace PreLuna.EnemyHealthBar.Runtime
             entries[slot].NextSight = 0f;
             entries[slot].Ghost = Mathf.Max(entries[slot].Ghost, max > 0f ? Mathf.Clamp01(before / max) : 0f);
             entries[slot].Visible = true;
+            if (hardTrigger)
+            {
+                entries[slot].HardFlashUntil = Time.time + HardFlashSeconds;
+                entries[slot].HardFlashFraction = 1f;
+            }
         }
 
         internal void Update(Camera camera)
@@ -99,7 +109,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
                 if (entry == null || !entry.Visible || !entry.State.Alive || entry.Key == focusKey) continue;
                 float alpha = Alpha(Time.time, entry.LastHit);
                 if (alpha <= .001f) continue;
-                renderer.Draw(entry.State, config, alpha, compact: true, ghostFraction: entry.Ghost);
+                float hardFlash = entry.HardFlashUntil > Time.time ? entry.HardFlashFraction : -1f;
+                renderer.Draw(entry.State, config, alpha, compact: true, ghostFraction: entry.Ghost, hardFlash: hardFlash);
             }
         }
 

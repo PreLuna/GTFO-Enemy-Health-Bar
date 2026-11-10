@@ -118,11 +118,12 @@ Patch:
 - `Dam_EnemyDamageBase.MeleeDamage` (`MeleeDamagePatch`)
 
 Each Prefix captures the full call only when the source `Agent` is the local player:
-`dam`, `precisionMulti`, `limbID`, `position`, `direction`, and
-`_Health_k__BackingField`. Postfix reads `_Health/_HealthMax`, resolves the limb
-type/multiplier, computes applied/raw damage and kill/immune flags, publishes
-`EnemyHitInfo` through `EnemyHitApi.HitRegistered`, and only calls
-`EnemyHudRuntime.RegisterHit` when health actually dropped.
+`dam`, `precisionMulti`, `staggerMulti`, `limbID`, `position`, `direction`, the
+pre-hit `m_damBuildToHitreact`, and `_Health_k__BackingField`. Postfix reads
+`_Health/_HealthMax`, resolves the limb type/multiplier and `DamageUntilHitreact`,
+computes applied/raw damage and kill/immune flags, publishes `EnemyHitInfo` through
+`EnemyHitApi.HitRegistered`, and only calls `EnemyHudRuntime.RegisterHit` when health
+actually dropped.
 
 Rules:
 
@@ -132,6 +133,7 @@ Rules:
 - `Harmony.UnpatchAll(id)` is obsolete in this HarmonyX build; use `harmony.UnpatchSelf()`.
 - Recent bars read live health every frame; local damage is only used to choose targets, not to synthesize health.
 - A hit on the currently focused enemy is still registered; the recent bar is skipped while focused, then can appear when the crosshair moves away.
+- The hard-pip trigger flash is `applied * staggerMulti >= DamageUntilHitreact` (with the pre-hit value) via `EnemyBarMath.HardTrigger`. It is display-only; the game may consume the live value inside the same damage call, so this flash is not a persistent meter and does not estimate health damage.
 - Displayed damage is `before - after`; the raw estimate
   `dam * precisionMulti * limbMulti` is published for later calibration.
 - Back-bonus color is reserved/off until the direction sign is measured.
@@ -142,6 +144,8 @@ Rules:
 ## 7. Recent bars / ghost
 
 - Capacity 3, hold 3s, fade 0.4s.
+- Entry keys use `EnemyAgent.Pointer` (the focus key). Do not key by `Dam_EnemyDamageBase.Pointer`: that value never matches the focus key, so the focused target would draw both its focus bar and a compact recent bar.
+- Each entry also stores a 0.22 s hard-flash timestamp; the focus bar keeps the same flash in `EnemyHudRuntime` and clears it when the target changes or the HUD hides.
 - Visibility: `Physics.Linecast` from the camera to a body point; only the target itself (or no hit) is visible. Checked at 0.1s intervals.
 - Health is read from the live object; recent entries are cleared when the target dies or the level ends.
 - Ghost is a light-gray segment between current health and the previous fraction, shrinking over 0.35s. It is visual only.

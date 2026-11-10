@@ -5,6 +5,7 @@ using Enemies;
 using HarmonyLib;
 using Player;
 using PreLuna.EnemyHealthBar.Api;
+using PreLuna.EnemyHealthBar.Core;
 using UnityEngine;
 
 namespace PreLuna.EnemyHealthBar.Runtime
@@ -19,6 +20,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
         static float before;
         static float dam;
         static float precisionMulti;
+        static float staggerMulti;
+        static float hardBefore;
         static int limbId;
         static Vector3 position;
         static Vector3 direction;
@@ -29,6 +32,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
             Agent source,
             float damageAmount,
             float precision,
+            float stagger,
             int limb,
             Vector3 hitPosition,
             Vector3 hitDirection,
@@ -46,6 +50,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
                 before = health;
                 dam = damageAmount;
                 precisionMulti = precision;
+                staggerMulti = stagger;
+                try { hardBefore = damage.m_damBuildToHitreact; } catch { hardBefore = -1f; }
                 limbId = limb;
                 position = hitPosition;
                 direction = hitDirection;
@@ -101,6 +107,15 @@ namespace PreLuna.EnemyHealthBar.Runtime
                 float raw = Mathf.Max(0f, dam * precisionMulti * limbMulti);
                 if (!float.IsFinite(raw)) raw = applied;
 
+                float hardMax = -1f;
+                try
+                {
+                    var balancing = owner.EnemyBalancingData;
+                    if (balancing != null) hardMax = balancing.Health.DamageUntilHitreact;
+                }
+                catch { }
+                bool hardTrigger = EnemyBarMath.HardTrigger(hardBefore, applied, staggerMulti, hardMax);
+
                 // Back-bonus coloring is intentionally off until P0 verifies the
                 // direction sign convention. The field stays in the API for later.
                 bool back = false;
@@ -115,7 +130,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
                 EnemyHitApi.Publish(info);
 
                 if (applied > 0f)
-                    EnemyHudRuntime.Current?.RegisterHit(damage, before, after, max);
+                    EnemyHudRuntime.Current?.RegisterHit(damage, before, after, max, hardTrigger);
 
                 if (!logged)
                 {
@@ -153,6 +168,8 @@ namespace PreLuna.EnemyHealthBar.Runtime
             before = 0f;
             dam = 0f;
             precisionMulti = 1f;
+            staggerMulti = 0f;
+            hardBefore = 0f;
             limbId = -1;
             position = default;
             direction = default;
@@ -182,7 +199,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
             float staggerMulti,
             float precisionMulti,
             uint gearCategoryId)
-            => EnemyHitCapture.Begin(__instance, sourceAgent, dam, precisionMulti, limbID, position, direction, false);
+            => EnemyHitCapture.Begin(__instance, sourceAgent, dam, precisionMulti, staggerMulti, limbID, position, direction, false);
 
         [HarmonyPostfix]
         static void Postfix(Dam_EnemyDamageBase __instance)
@@ -210,7 +227,7 @@ namespace PreLuna.EnemyHealthBar.Runtime
             bool skipLimbDestruction,
             DamageNoiseLevel damageNoiseLevel,
             uint gearCategoryId)
-            => EnemyHitCapture.Begin(__instance, sourceAgent, dam, precisionMulti, limbID, position, direction, true);
+            => EnemyHitCapture.Begin(__instance, sourceAgent, dam, precisionMulti, staggerMulti, limbID, position, direction, true);
 
         [HarmonyPostfix]
         static void Postfix(Dam_EnemyDamageBase __instance)
