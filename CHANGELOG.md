@@ -17,8 +17,8 @@
 - `Sound/Style` is exposed as `styleIndex` 0/1/2; `KillIcon/TierSource` as `healthTiering`
   bool. Config values stay `BF1/BF5/BF6` and `Health/EnemyType`.
 - BFV 5 offline suites, 44 checks (4 control-API); ModControl 18 suites (2 BFV adapter).
-- Installed and startup-verified (`BFV control=Available; settings=26`); panel UI/readback
-  awaits gameplay confirmation.
+- User-confirmed on 2026-11-17: panel renders, 26-field summary is compact, color Apply
+  updates immediately, and the color reads back after restart.
 
 ## EnemyHealthBar.BFVFeedback 0.1.0 — 2026-11-17
 
