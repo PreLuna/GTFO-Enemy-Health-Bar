@@ -19,8 +19,8 @@
     },
     {
       "Path": "CHANGELOG.md",
-      "SHA256": "E835CDDE63FD3EC38E44F415BCF2B11EA1850AF2FA411B73F95AC533BF3ACE90",
-      "Bytes": 4256
+      "SHA256": "FEC6A8F9B3A02ACDDACCB18E231D78B4D2F45E603132F1D569D194889493825F",
+      "Bytes": 7194
     },
     {
       "Path": "docs/DAMAGE_NUMBERS.md",
@@ -34,8 +34,8 @@
     },
     {
       "Path": "docs/DEVELOPMENT.md",
-      "SHA256": "32CF15DC4364869B4739AB1D43BF1B6E27425256E76B54719B72A079A559A0EC",
-      "Bytes": 14631
+      "SHA256": "453C8137E337983868D0F0E7400F78C3C8E319E91245E7AB0FFDFD89B6037CAA",
+      "Bytes": 15176
     },
     {
       "Path": "docs/evidence/build-manifest.json",
@@ -96,6 +96,111 @@
       "Path": "docs/RESEARCH.md",
       "SHA256": "E81AF961354D0C1C53BE4C827BF6F0180FA944475702FC458C28B8FD4C7DD6E1",
       "Bytes": 6684
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/控制面板.md",
+      "SHA256": "39B167AB79541A77A170CE512389251EB8E7FA1BE7F36E5EF5AD1096C4E794E2",
+      "Bytes": 7858
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/实现与反馈时序.md",
+      "SHA256": "2FE732399637B29698C690578C110CF5BD848BEAAA3603926814457620E187B5",
+      "Bytes": 11738
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/说明.md",
+      "SHA256": "645D356ACB0534C93C5B87DF663F1D16D370B1F67CB192ADA77D4EB560640347",
+      "Bytes": 7748
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Control/BfvFeedbackControlApi.cs",
+      "SHA256": "A6A9546566B1B086A3F180039028BEF74418CF4EFA985DB0F0DE281BB01BB955",
+      "Bytes": 10019
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Control/BfvFeedbackControlFileStore.cs",
+      "SHA256": "519F1DE0DD3D2690E77A1ACFFFD5E0BA4F882AA5E575E2C808B7DE4C802D9430",
+      "Bytes": 5208
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Control/BfvFeedbackControlModels.cs",
+      "SHA256": "2860826C46319B13DB700FA520B9A0963E3F176DE74023D4A4A630A87421E189",
+      "Bytes": 9021
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Control/BfvFeedbackControlState.cs",
+      "SHA256": "4EE4C30DC338F33EAF67ABD117DBE2DAB39E3EA41D969706733E99C6E65CC89B",
+      "Bytes": 15171
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Core/BfvColor.cs",
+      "SHA256": "20B8DAEA19F03A9755417BC408BA0C4B7A43D1554B3B6C26B45E609A3A9EBAD5",
+      "Bytes": 2840
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Core/BfvPolicy.cs",
+      "SHA256": "A6ABF7B952E93008B7D602715998DC294994B7E7FB18B31F3EA253FD836AD7DC",
+      "Bytes": 11164
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Core/BfvTypes.cs",
+      "SHA256": "4CBF31D45166E080D727A3CDF3266F48C973C8CB9D6036086BE17F5E62399011",
+      "Bytes": 618
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/BfvAudio.cs",
+      "SHA256": "DE56FD2B0AF1D0C7C7DCF3EA124CC68382683276E7947CA09336B02A0C6F3BD0",
+      "Bytes": 11540
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/BfvConfig.cs",
+      "SHA256": "7FFEEDECB543B61904F81EFA8F0C6846D768BE043C36AA91A926C849D5629B01",
+      "Bytes": 22888
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/BfvController.cs",
+      "SHA256": "74F2B99F0BFE4AB3DFC8384C134DB624F20E61F6BFF3A8BE84BA9A9F0F1B5B15",
+      "Bytes": 19708
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/BfvIcons.cs",
+      "SHA256": "7EF865DDF9263C29BA040494F3C71F454F8777BABFB5561A3AC1FBFD39F61D14",
+      "Bytes": 4140
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/BfvImpactContext.cs",
+      "SHA256": "EBF3C3BF6CBE5C6C449024B0B835C269BDA956278DEEB4983BB04CAEE5F38B3C",
+      "Bytes": 5100
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/BfvPatches.cs",
+      "SHA256": "89B3D2B1161CD8797639EC0A386F7164DB0F47E541905647D3D9EEA1D9504070",
+      "Bytes": 3748
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/BfvRuntime.cs",
+      "SHA256": "6EABCCB60E5F6B6BE34E9E43F4F12F348301A932247B1BA317301D74BB80E9AF",
+      "Bytes": 2556
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/Plugin.cs",
+      "SHA256": "E89890BF8C74A029827055BE93F585069366B8948B1ADEDE43B10BD93291B6DD",
+      "Bytes": 4463
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/src/Runtime/WinMmPlayer.cs",
+      "SHA256": "A4E6D7D11776D45562190E5324D42AF514CE5463A60B0469EE4EF3688A3D69CC",
+      "Bytes": 9365
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/tests/BfvFeedbackControlTests.cs",
+      "SHA256": "77AEE8FF479B2E899A1E842692DC3FB5E890BBB300F9C18A8C4DE52EAE94A5BB",
+      "Bytes": 6009
+    },
+    {
+      "Path": "EnemyHealthBar.BFVFeedback/tests/BfvFeedbackTests.cs",
+      "SHA256": "51967431609585E62318D1953147C6854CDDED895162D9587B19AF3FC0CD00EF",
+      "Bytes": 9940
     },
     {
       "Path": "EnemyHealthBar.DamageNumbers/说明.md",
@@ -289,18 +394,18 @@
     },
     {
       "Path": "IntegrationTests/recipes.json",
-      "SHA256": "DDAD7E0C2C956967EE1A4E0DFD0AE5D91C2BB875D7C3B8C8FE36DC883BE3F3E3",
-      "Bytes": 1590
+      "SHA256": "78CFBFC1255A9D78B1F6175DD06C0A90E679131CE9472CF9BA44929A208FE52D",
+      "Bytes": 2452
     },
     {
       "Path": "README.md",
-      "SHA256": "F93408EF3C116DB863FFDC32D3E625BE642019CBFB346222DA2551421338B694",
-      "Bytes": 11095
+      "SHA256": "93B3B7076A10D69D9B01F8D7F6C5243CF50526C546BA2BE42B92F98A3F80581D",
+      "Bytes": 18214
     },
     {
       "Path": "repo.json",
-      "SHA256": "6429B647B43A466766753916606B88CC521C127FAF0C0FD65033DEF53F38065A",
-      "Bytes": 1450
+      "SHA256": "05F8F0F18D4D67C2F68A34D7B90310E30139F49CAA22317955BA1D51174513F4",
+      "Bytes": 2230
     },
     {
       "Path": "Test.ps1",
@@ -309,8 +414,8 @@
     },
     {
       "Path": "THIRD-PARTY-NOTICES.md",
-      "SHA256": "27E9C23F4423C973775D36BA50AF497D4609C83C43BE654B9F9848ED897C50DC",
-      "Bytes": 2995
+      "SHA256": "F9541BACA6287A594C246FE68771A76E8117E52B4A9DD1101825394EB7C4918B",
+      "Bytes": 3799
     }
   ]
 }

@@ -53,5 +53,30 @@
     "Arguments": [
       "out/tests/DamageNumberTests.json"
     ]
+  },
+  {
+    "Name": "BfvFeedbackTests",
+    "Sources": [
+      "EnemyHealthBar.BFVFeedback/src/Core/BfvTypes.cs",
+      "EnemyHealthBar.BFVFeedback/src/Core/BfvColor.cs",
+      "EnemyHealthBar.BFVFeedback/src/Core/BfvPolicy.cs",
+      "EnemyHealthBar.BFVFeedback/tests/BfvFeedbackTests.cs"
+    ],
+    "Arguments": [
+      "out/tests/BfvFeedbackTests.json"
+    ]
+  },
+  {
+    "Name": "BfvFeedbackControlTests",
+    "Sources": [
+      "EnemyHealthBar.BFVFeedback/src/Core/BfvColor.cs",
+      "EnemyHealthBar.BFVFeedback/src/Control/BfvFeedbackControlModels.cs",
+      "EnemyHealthBar.BFVFeedback/src/Control/BfvFeedbackControlState.cs",
+      "EnemyHealthBar.BFVFeedback/src/Control/BfvFeedbackControlFileStore.cs",
+      "EnemyHealthBar.BFVFeedback/tests/BfvFeedbackControlTests.cs"
+    ],
+    "Arguments": [
+      "out/tests/BfvFeedbackControlTests.json"
+    ]
   }
 ]

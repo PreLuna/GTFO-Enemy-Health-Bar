@@ -1,5 +1,44 @@
 # Changelog
 
+## EnemyHealthBar.BFVFeedback 0.2.0 — 2026-11-17
+
+- Add `PreLuna.EnemyHealthBar.BFVFeedback.Control`: 26 writable settings with revision,
+  line-level config save and comment/unknown-key preservation.
+- ModControl 0.3.4 adds a dedicated “BFV 反馈” target page (not nested under the health bar),
+  plus a String target value kind for four color fields; the page renders TheArchive's
+  native `SColor` color picker (Hue/Saturation/Value, optional hex) instead of a text input.
+- The BFV page implements `ITargetValueSummary` to hide the 26-field effective/saved dump and
+  show only “当前生效/已保存：26 项”, preventing long labels from overlapping settings rows.
+- Live settings: sound style/toggles/volumes/gains/high-pass/chime/priority, hitmarker
+  size/replace/armor/noDamage, kill icon size/opacity/lifetime/gap, Health/EnemyType tiering,
+  follow-HUD, and all four marker colors (colors re-parsed when changed).
+- Fix: `HitMarker/ReplaceVanilla` was a no-op; both indicator prefixes now return
+  `handled && ReplaceVanillaMarker`, so the toggle actually restores vanilla markers.
+- `Sound/Style` is exposed as `styleIndex` 0/1/2; `KillIcon/TierSource` as `healthTiering`
+  bool. Config values stay `BF1/BF5/BF6` and `Health/EnemyType`.
+- BFV 5 offline suites, 44 checks (4 control-API); ModControl 18 suites (2 BFV adapter).
+- Installed and startup-verified (`BFV control=Available; settings=26`); panel UI/readback
+  awaits gameplay confirmation.
+
+## EnemyHealthBar.BFVFeedback 0.1.0 — 2026-11-17
+
+- New sub-mod `PreLuna.EnemyHealthBar.BFVFeedback`, hard dependency on parent 0.4.0.
+- Local-player-only BFV feedback: hit sounds, kill sounds, four hitmarker kinds, head kill icons.
+- Uses `CrosshairGuiLayer.ShowHitIndicator`/`ShowDeathIndicator` as the primary event source;
+  a read-only `BulletDamage`/`MeleeDamage` prefix supplies the enemy/head anchor/`HealthMax`.
+- Default: replace vanilla markers and mute the two local hit-indicator events; both configurable.
+- Assets are external (`Assets/` or `Sound/CustomDirectory`); DLL contains no audio/icon binaries.
+- Audio backend: WinMM `waveOut` 8 voices (Unity `AudioClip` threw native `ArgumentException`
+  and caused a crash in this IL2CPP build); `Sound/Gain` default 1.8 with tanh limiting.
+- Kill confirmation: independent 90 ms high-frequency chime (`KillChimeEnabled/Volume`),
+  kill-cue high-pass (`KillHighPassHz=350`), and a 150 ms hit-sound priority window
+  (`KillPriorityMs`) so shotgun/continuous hits cannot mask the kill cue.
+- Kill tier defaults to native `EnemyType` (Weakling=MINOR, Standard/Special=ELITE,
+  MiniBoss/Boss=BOSS); `KillIcon/TierSource=Health` restores HealthMax thresholds.
+- Armor marker is strict `eLimbDamageType.Armor`; `noDamage` is no longer armor by default.
+- 3 assemblies build; 5 offline suites, 40 checks (BFV 10). User-confirmed “测试通过”
+  on 2026-11-17 (overall pass, not a per-feature matrix).
+
 ## Unreleased — 2026-11-10
 
 - Fix: a hit on the focused enemy no longer draws a second (compact) recent bar on top

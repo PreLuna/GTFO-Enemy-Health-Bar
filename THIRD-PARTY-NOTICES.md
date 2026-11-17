@@ -34,6 +34,20 @@ SOFTWARE.
 
 Nothing in this file grants rights to third-party mods whose license is unknown.
 
+## BFV feedback assets (external, not in this repository)
+
+The `EnemyHealthBar.BFVFeedback` runtime code is original: it uses the game's hit/death
+indicator events and a read-only damage prefix, and does not copy KillFeed source.
+The optional audio/icon pack was extracted from HawChow/KillFeed 1.2.19:
+
+- Source: https://thunderstore.io/c/gtfo/p/HawChow/KillFeed/
+- Package SHA256: `F3EB59372468CB8BAC3AEEA88EFAD02ADBF576635658CC744513B67B20C2AD70`
+- License: no explicit LICENSE; the audio/icon assets are Battlefield-derived
+  (EA/DICE) and are **not committed to this repository**.
+- Private/local use only. Before public distribution, replace the pack with CC0 or
+  self-made assets, or obtain permission. The DLL works without the pack and falls
+  back to vanilla feedback when assets are absent.
+
 ## DamageNumbers / FloatingTextAPI
 
 The damage-number sub-mod was designed after the Harmony hook/parameter flow and

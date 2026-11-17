@@ -40,11 +40,37 @@
         }
       ],
       "TestsRoot": "EnemyHealthBar.DamageNumbers/tests"
+    },
+    {
+      "Id": "EnemyHealthBar.BFVFeedback",
+      "Assembly": "PreLuna.EnemyHealthBar.BFVFeedback",
+      "Guid": "PreLuna.EnemyHealthBar.BFVFeedback",
+      "Version": "0.2.0",
+      "DependencyGuids": [
+        "PreLuna.EnemyHealthBar"
+      ],
+      "CompileDependencies": [
+        "EnemyHealthBar"
+      ],
+      "Kind": "managed",
+      "ModuleRoot": "EnemyHealthBar.BFVFeedback",
+      "SourceRoot": "EnemyHealthBar.BFVFeedback/src",
+      "Name": "BFV 命中与击杀反馈",
+      "DependencyDetails": [
+        {
+          "Guid": "PreLuna.EnemyHealthBar",
+          "DependencyFlags": 1,
+          "Kind": "Hard",
+          "DeclaredVersion": "0.4.0"
+        }
+      ],
+      "TestsRoot": "EnemyHealthBar.BFVFeedback/tests"
     }
   ],
   "InputRoots": [
     "EnemyHealthBar",
     "EnemyHealthBar.DamageNumbers",
+    "EnemyHealthBar.BFVFeedback",
     "IntegrationTests",
     "docs"
   ],

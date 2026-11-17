@@ -1,13 +1,16 @@
 # GTFO-Enemy-Health-Bar
 
-独立敌人血条插件及其全境封锁风格伤害数字子 MOD。不依赖第三人称镜头/HUD、
-ForgeUI、ForgeCore 或 DamageSync。
+独立敌人血条插件、全境封锁风格伤害数字子 MOD，以及 BFV 命中/击杀反馈子 MOD。
+不依赖第三人称镜头/HUD、ForgeUI、ForgeCore 或 DamageSync。
 
 - 父 MOD：**EnemyHealthBar 0.4.0**（P1 焦点 + P2 最近命中 + P3 完整命中事件 API + C3 控制快照）
-- 子 MOD：**EnemyHealthBar.DamageNumbers 0.1.1（6字段可写）**（命中点数字、右对齐连击列；硬依赖父 0.4.0）
-- 程序集：`PreLuna.EnemyHealthBar`、`PreLuna.EnemyHealthBar.DamageNumbers`
+- 子 MOD 1：**EnemyHealthBar.DamageNumbers 0.1.1（6字段可写）**（命中点数字、右对齐连击列；硬依赖父 0.4.0）
+- 子 MOD 2：**EnemyHealthBar.BFVFeedback 0.2.0（26 项面板可写）**（BFV 命中音/击杀音、四档命中线、头顶击杀图标；硬依赖父 0.4.0）
+- 程序集：`PreLuna.EnemyHealthBar`、`PreLuna.EnemyHealthBar.DamageNumbers`、
+  `PreLuna.EnemyHealthBar.BFVFeedback`
 - 游戏目标：父 DLL 放 `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar/`，
-  子 DLL 放 `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar.DamageNumbers/`；
+  子 DLL 分别放 `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar.DamageNumbers/`、
+  `BepInEx/plugins/本地定制/PreLuna.EnemyHealthBar.BFVFeedback/`；
   不要把子 DLL 再复制进父目录，否则会重复加载。
 - 目标游戏：GTFO + BepInEx 6 IL2CPP（本机 6.0.0-be.697）
 
@@ -55,6 +58,24 @@ EnemyHitApi.HitRegistered += hit =>
 - 旧 `DamageNumbers`（`com.dak.DamageNumbers`）检测：加载时若发现旧 MOD 会写警告；
   两者不要同时启用，否则同一次命中会出现两套数字。
 
+### BFV 命中/击杀反馈子 MOD
+
+- 事件源：游戏本地 `CrosshairGuiLayer.ShowHitIndicator` / `ShowDeathIndicator` 为主，
+  只读 `BulletDamage`/`MeleeDamage` 前缀补齐敌人、头部锚点与 `HealthMax`；只影响本机玩家自己的命中/击杀。
+- 命中线：普通白 X、弱点橙 X（大 18%）、真实护甲 limb 青色四角括号、击杀加粗红线；
+  跟随世界命中点投影，同一敌人 50ms 内的霰弹命中合并为一条。
+- 击杀图标：默认按敌人原生 `EnemyType` 分 MINOR / ELITE / BOSS，分别画白骷髅/橙骷髅/红齿轮；
+  Weakling=MINOR，Standard/Special=ELITE，MiniBoss/Boss=BOSS；可切到 `Health` 阈值模式。
+  锚点在击杀瞬间冻结，默认 2.2s 淡出，同屏最多 6 个。
+- 音效：KillFeed 1.2.19 的 BF5 命中/击杀音（可切 BF1/BF6，缺失类别回落 BF5），
+  命中与击杀分开节流；默认静音原版两个本地命中提示事件。
+- 素材：DLL 不含音频/图标；`Assets/` 放在插件目录，或用 `Sound/CustomDirectory` 指向外部素材包。
+  未放素材时安全回退原版，不静默吞掉反馈。
+- 面板：0.2.0 新增 `PreLuna.EnemyHealthBar.BFVFeedback.Control`，由
+  `PreLuna.ModControl` 0.3.4 的“已接入 MOD → BFV 反馈”单列页读写 26 项；声音/命中线/图标/
+  颜色/档位即时生效，颜色使用 TheArchive 原生 `SColor` 拾色器。`ReplaceVanilla` 现已真正控制原版抑制。
+- 与 DamageNumbers 独立：两者都订阅 `EnemyHitApi`/游戏事件，可同时开启。
+
 P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
 
 ## 文档
@@ -63,22 +84,32 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
 - [研究与许可](docs/RESEARCH.md)：上游 MOD 结论、ForgeUI MIT、Division 2 参考。
 - [设计说明](docs/DESIGN.md)：线稿、比例、信息层级、状态/等级槽。
 - [伤害数字子 MOD](docs/DAMAGE_NUMBERS.md)：样式、数据链、配置、限制、验收项。
+- [BFV 命中/击杀反馈子 MOD](EnemyHealthBar.BFVFeedback/说明.md)：事件流、素材布局、配置、限制。
+- [BFV 实现与反馈时序](EnemyHealthBar.BFVFeedback/实现与反馈时序.md)：代码模块、每种音效/UI 的出现条件与时序。
+- [BFV 控制面板](EnemyHealthBar.BFVFeedback/控制面板.md)：已接入的 26 项字段、控件类型、颜色拾色器和即时/重启/只读边界。
 - [变更记录](CHANGELOG.md)。
 
 ## 安装
 
 1. 退出游戏。
-2. 分别放到两个目录：
+2. 分别放到三个目录：
    - `本地定制/PreLuna.EnemyHealthBar/PreLuna.EnemyHealthBar.dll`
    - `本地定制/PreLuna.EnemyHealthBar.DamageNumbers/PreLuna.EnemyHealthBar.DamageNumbers.dll`
+   - `本地定制/PreLuna.EnemyHealthBar.BFVFeedback/PreLuna.EnemyHealthBar.BFVFeedback.dll`
+     + 同目录 `Assets/audio/...`、`Assets/icons/...`
    - **不要**把子 DLL 同时放在父目录；BepInEx 会递归扫描，重复副本会导致版本冲突。
-3. 启动游戏；父 MOD 默认 `PageDown` 开关血条/数字显隐。
+3. 启动游戏；父 MOD 默认 `PageDown` 开关血条/数字显隐。BFV 反馈默认跟随该显隐。
 4. 如果还装着旧 HawChow `GTFOEnemyHealthBar.dll`，先移出/停用，避免双份血条。
 5. 如果还装着旧 `DamageNumbers-伤害数字/DamageNumbers.dll`，停用/移出，避免两套伤害数字。
    `FloatingTextAPI` 可以保留不动，新子 MOD 不依赖它。
+6. 如果同时装 KillFeed，先在它的 cfg 里关掉 `HitSound`、`HitMarker`、`KillIcon`，避免双份命中反馈。
+7. 要用游戏内面板，安装 `PreLuna.ModControl` 0.3.4 到
+   `本地定制/PreLuna.ModControl/PreLuna.ModControl.dll`；入口是
+   **设置 → 已接入 MOD → BFV 反馈**。不装面板时 BFV 反馈仍按 cfg 运行。
 
 配置文件：`BepInEx/config/PreLuna.EnemyHealthBar.cfg`、
-`BepInEx/config/PreLuna.EnemyHealthBar.DamageNumbers.cfg`（首次启动生成）。
+`BepInEx/config/PreLuna.EnemyHealthBar.DamageNumbers.cfg`、
+`BepInEx/config/PreLuna.EnemyHealthBar.BFVFeedback.cfg`（首次启动生成）。
 
 ## 主要配置
 
@@ -117,16 +148,49 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
 | Display | ShowImmune | true | `IMMUNE` |
 | Display | ShowKillFlash | true | 击杀红色短下划 |
 
+### BFV 反馈子 MOD
+
+| 分组 | 键 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| General | Enabled | true | 总开关；关闭后原版标记/提示音恢复 |
+| General | ToggleKey | None | 本机临时开关；`None` 关闭按键 |
+| General | FollowHudVisibility | true | 跟随血条 PageDown 显隐；隐藏时原版反馈恢复 |
+| Sound | Enabled | true | 音效总开关 |
+| Sound | Style | BF5 | BF1 / BF5 / BF6；缺失类别回落 BF5 |
+| Sound | Volume / HitVolume / KillVolume | 1.0 / 1.0 / 1.0 | 主音量与两通道音量 |
+| Sound | Gain | 1.8 | 额外增益（0.5–3.0），tanh 软限幅 |
+| Sound | HitGain / KillGain | 1.0 / 1.6 | 命中/击杀再独立乘一次 |
+| Sound | KillHighPassHz | 350 | 击杀音高通；0 = 关闭 |
+| Sound | KillChimeEnabled / KillChimeVolume | true / 0.9 | 独立短促击杀确认音 |
+| Sound | KillPriorityMs | 150 | 击杀后跳过命中音，突出确认音 |
+| Sound | HitEnabled / KillEnabled | true / true | 命中/击杀音独立开关 |
+| Sound | MinIntervalSeconds | 0.05 | 命中、击杀分别节流 |
+| Sound | MuteVanillaIndicator | true | 静音原版两个本地命中提示事件 |
+| Sound | CustomDirectory | 空 | 外部素材目录；留空用插件 `Assets/` |
+| HitMarker | Enabled | true | 命中线/击杀线总开关 |
+| HitMarker | ReplaceVanilla | true | 替换原版标记；关闭则叠加 |
+| HitMarker | Size | 64 | 1080p 基准 |
+| HitMarker | ColorNormal/Weakspot/Armor/Kill | 白/橙/青/红 | `#RRGGBB` 或 `#RRGGBBAA` |
+| HitMarker | ArmorFromNoDamage | false | 仅真实 `eLimbDamageType.Armor` 显示青色 |
+| HitMarker | MergeWindowMs | 50 | 同一敌人合并窗口；0 = 不合并 |
+| KillIcon | Enabled | true | 头顶击杀图标开关 |
+| KillIcon | Size / Opacity / Lifetime / MaxIcons | 46 / 0.85 / 2.2 / 6 | 图标尺寸、透明度、寿命、上限 |
+| KillIcon | TierSource | EnemyType | 按原生类型分档；`Health` 用阈值 |
+| KillIcon | HeadGapMetres | 0.35 | 头部锚点与图标的额外余量 |
+| KillIcon | MinorHealthThreshold / HeavyHealthThreshold | 120 / 1000 | 仅 `TierSource=Health` 时使用 |
+
 ## 构建与测试
 
 ```powershell
-./Build.ps1 -GameRoot 'D:/Program/Game/Steam/Steam/steamapps/common/GTFO' -RuntimeRoot 'C:/Program Files/dotnet/shared/Microsoft.NETCore.App/6.0.16'
-./Test.ps1 -RuntimeRoot 'C:/Program Files/dotnet/shared/Microsoft.NETCore.App/6.0.16'
+./Build.ps1 -GameRoot 'D:/Program/Game/Steam/Steam/steamapps/common/GTFO' -RuntimeRoot 'C:/Program Files/dotnet/shared/Microsoft.NETCore.App/6.0.36'
+./Test.ps1 -RuntimeRoot 'C:/Program Files/dotnet/shared/Microsoft.NETCore.App/6.0.36'
 ```
 
 当前离线测试：`EnemyTypeMappingTests` 5 项、`EnemyBarMathTests` 6 项、
-`EnemyHudControlTests` 7 项（目标控制/保存回滚）、`EnemyHudConfigFileStoreTests` 5 项（安全行级存储）、`DamageNumberTests` 7 项，共 30 项。
-构建输出只在 `out/`；不自动写游戏目录。
+`EnemyHudControlTests` 7 项（目标控制/保存回滚）、`EnemyHudConfigFileStoreTests` 5 项（安全行级存储）、`DamageNumberTests` 7 项、`BfvFeedbackTests` 10 项（档位/类型/素材回落/标记/颜色），共 40 项。
+构建输出只在 `out/`；不自动写游戏目录。BFV 反馈的音频/图标不随 DLL 编译，需要把
+`gtfo-bfv-feedback/assets/bfv-feedback-pack/audio`、`icons` 复制到插件目录 `Assets/`，
+或由 `Sound/CustomDirectory` 指向外部素材目录。
 
 ## C3 控制接口
 
@@ -162,6 +226,16 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
   极限场景；这些不冒充已验收。
 - 2026-11-10：修复焦点期间最近命中副条叠画（副条键改为 `EnemyAgent.Pointer`），硬直空槽改为可见描边；用户实机确认副条与空槽正常。武器攻击时 `HARD` 仍长时间显示 0/5，属游戏 `m_damBuildToHitreact` 累计/采样时机，渲染侧未改。
 - 2026-11-10：新增硬直阈值触发闪示（`applied×staggerMulti ≥ DamageUntilHitreact` 时 4 格全亮 0.22s，随后回真实余量）；构建与 30 项离线测试通过，已由用户实机确认正常。
+- 2026-11-17：新增 `EnemyHealthBar.BFVFeedback` 0.1.0（BFV 命中/击杀反馈子 MOD）；
+  3 程序集构建通过，5 套离线测试共 40 项通过（含 BFV 10 项）；
+  用户当日实机反馈 **“测试通过”**（整体通过，非逐项矩阵）。WinMM 音频、击杀确认音、
+  高通、命中线、头顶图标与 EnemyType 档位已一起测试；客机/逐敌 Armor 清单仍未单独覆盖。
+- 2026-11-17：`EnemyHealthBar.BFVFeedback` 0.2.0 接入 `PreLuna.ModControl` 0.3.4，
+  新增单列“BFV 反馈”页 26 项即时配置、`SColor` 拾色器和 `ReplaceVanilla` 修复；
+  BFV 5 套 44 项、ModControl 18 套离线测试通过。已安装并确认启动日志
+  `BFV control=Available; settings=26`、`PreLuna.ModControl 0.3.4 ready`；
+  面板页面已可见；首次发现 26 项全量摘要文字重叠，已改为只显示项数并安装压缩版；
+  颜色拾色器/写入/重启读回待用户复测，不冒充已验收。
 
 ## 当前限制
 
@@ -176,9 +250,17 @@ P1 使用 ASCII 标签/数字；中文动态字体（P1.5）尚未接入。
   原始估算 `RawDamage` 已在 API 中提供，后续可按实测切换。
 - 背击颜色暂不启用（方向符号未实测），API 字段保留。
 - 不写血量、不发网络包、不修改敌人数据。
+- BFV 反馈以游戏本地命中/击杀指示为主要事件源；客机是否触发 `ShowDeathIndicator`
+  以及被游戏设置关闭时的兜底仍未实机验证。`Knife`/爆炸/持续伤害不在 P1 覆盖范围。
+- 召唤的 `Striker_Big_Hibernate` 会触发游戏侧 `ES_Hibernate`/`ES_Hitreact` 空引用，
+  出现 0 血不死；BFV 反馈与血条都只读，不写血/不控制死亡，需用非 Hibernate 变体对照。
+- BFV 反馈的音效素材是 Battlefield 派生样本（来自 KillFeed 1.2.19 提取），
+  **不提交进源码仓**；公开分发前需换成 CC0/自制素材。
 
 ## 来源与许可
 
 本项目为 PreLuna 实现。上游研究、ForgeUI MIT、DamageNumbers/FloatingTextAPI MIT
 与复用边界见[研究与许可](docs/RESEARCH.md)和[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)；
 其他无明确许可证的参考 MOD 不整段复制。
+BFV 反馈的可选音频/图标素材来自 HawChow/KillFeed 1.2.19（Battlefield 派生，无明确 LICENSE），
+只在本机素材包中使用，不进入源码 Git；公开 Release 需替换为可再分发素材。

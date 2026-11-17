@@ -42,6 +42,14 @@ PreLuna.EnemyHealthBar.DamageNumbers (separate assembly)
   ├─ DamageNumberRenderer           IMGUI rows/shadow/kill underline
   ├─ DamageNumberFont               system-font fallback
   └─ Core (Format/Style/Math)       pure C#; offline tests
+
+PreLuna.EnemyHealthBar.BFVFeedback (separate assembly)
+  ├─ Plugin                         BepInDependency on parent 0.4.0
+  ├─ BfvImpactContext               read-only damage prefix: enemy/head/HealthMax
+  ├─ BfvRuntime                     indicator events -> markers/icons/audio
+  ├─ BfvAudio / BfvIcons            external Assets (WAV/PNG), no embedded binaries
+  ├─ Control                        BfvFeedbackControlApi/State/FileStore: 26 ModControl fields
+  └─ Core (Types/Policy/Color)      pure C#; offline tests
 ```
 
 All Unity reads and drawing happen on the main thread. The pure parts (`EnemyTypeMapping`, `EnemyBarMath`, `EnemyHudProfile`) have no Unity dependency and are covered by offline tests.
